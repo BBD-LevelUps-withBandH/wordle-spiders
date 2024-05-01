@@ -1,0 +1,49 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+
+.spirdle {
+    display:flex;
+    flex-direction: row;
+    max-width: 50%;
+    align-items: center; /* Center vertically */
+    justify-content: center; 
+    gap: 5%;
+    margin:50% auto
+   }
+  
+  .green, .red,.yellow{
+      width: 2em;
+      height: 2em;
+      border-radius: 100%;
+      font-size: 2em;
+      color: white;
+      font-family: 'Jua', sans-serif;
+      font-weight: 100;
+      margin: 5% auto; /* shorthand for margin-top and margin-bottom */
+      display: flex; /* Add flexbox */
+      align-items: center; /* Center vertically */
+      justify-content: center; /* Center horizontally */  
+      aspect-ratio: 1;
+     } 
+
+  .green{
+    background-color: #07C041;
+}
+  .yellow{
+    background-color: #DAA731;
+  }
+  .red{
+    background-color: #BA084C;
+  }
+
+  .login-button{
+    border-radius:2em;
+    display: flex;
+    font-size: 2em;
+    color: white;
+    font-family: 'Jua', sans-serif;
+    font-weight: 100;
+    background-color: black;
+    margin:-25% auto;
+  }
