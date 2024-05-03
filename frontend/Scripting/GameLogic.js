@@ -3,17 +3,21 @@ const dictionary = [
     "hello",
     "slipe",
     "slice",
-    "hours"
+    "hours",
 ]
 
 
 const gameGrid = document.querySelector("[data-grid]");
 const alertContainer = document.querySelector("[data-alert-container]");
 const keyboard = document.querySelector("[data-keyboard]");
+
+//constants 
 const MAX_WORD_LENGTH = 5;
 const FLIP_DURATION = 500;
 const DANCE_DURATION = 500;
-let targetWord = "hello";
+
+
+let targetWord = "hello"; //the word they need to guess 
 
 
 startGame();
@@ -67,10 +71,10 @@ function pressKey(key){
 
     if(activeTiles.length >= MAX_WORD_LENGTH) return;
 
-    const nextTile = gameGrid.querySelector(":not([data-letter])");
+    const nextTile = gameGrid.querySelector(":not([data-letter])"); //get the first next tile that doesnt have a letter
     nextTile.dataset.letter = key.toLowerCase();
-    nextTile.textContent = key;
-    nextTile.dataset.state = "active";
+    nextTile.textContent = key; 
+    nextTile.dataset.state = "active"; 
 
 }
 
@@ -114,6 +118,26 @@ function getActiveTiles(){
 
 }
 
+function checkWinState(guessedWord, array){
+    if(guessedWord === targetWord){
+        //win 
+        showAlert("You won!");
+        danceAnimation(array);
+        endGame();
+        return
+    }
+
+    const remainingTiles = gameGrid.querySelectorAll(":not([data-letter])")
+    if (remainingTiles.length === 0) {
+        showAlert("The word was " + targetWord.toUpperCase() , null);
+        endGame();
+    }
+
+
+}
+
+
+//Animations\\
 function shakeAnimation(tiles){
     tiles.forEach(tile => {
         tile.classList.add("shake");
@@ -156,24 +180,6 @@ function flipTiles(tile, index, array, guessedWord){
     }, { once: true })
 }
 
-function checkWinState(guessedWord, array){
-    if(guessedWord === targetWord){
-        //win 
-        showAlert("You won!");
-        danceAnimation(array);
-        endGame();
-        return
-    }
-
-    const remainingTiles = gameGrid.querySelectorAll(":not([data-letter])")
-    if (remainingTiles.length === 0) {
-        showAlert("The word was " + targetWord.toUpperCase() , null);
-        endGame();
-    }
-
-
-}
-
 function danceAnimation(tiles){
     tiles.forEach((tile, index) => {
         setTimeout(() => {
@@ -189,6 +195,8 @@ function danceAnimation(tiles){
       })
 
 }
+
+
 
 function showAlert(message, duration){
     const alert = document.createElement("span");
