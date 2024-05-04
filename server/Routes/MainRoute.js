@@ -2,7 +2,12 @@ var express = require("express")
 const path = require("path");
 const { join } = require("path");
 const mainRouter = express.Router();
-const {getHighScore, getWordsOfDay} = require('../database.queries');
+const {getHighScore, 
+       getWordsOfTheDay,
+       getRemainingUserScores,
+       checkIfUserIDExists,
+       checkIfWordIDExists,
+       addScore} = require('../database.queries');
 
 const handle_errors = (fn) => (req, res, next) => {  
     Promise.resolve(fn(req, res, next)).catch((error) => {
@@ -29,35 +34,46 @@ mainRouter.get(
 );
 
 mainRouter.get(
-    "/checkWord/:word",
+    "/getWordsOfTheDay",
     handle_errors(async (req, res) => {
-        let wordsOfDay = await getWordsOfDay();
-        let match = false;
+        let result = await getWordsOfTheDay();
+        
+        if (result.length == 0)
+            res.status(404).send("No Words of the Day")
+        else
+            res.json(result);
+    })
+);
 
-        //Check for valid word match
-        wordsOfDay.forEach((item) => {
-            if (item.word == req.params.word.toUpperCase()) {
-                res.send("Correct Word");
-                match = true;
+mainRouter.post(
+    "/postScore",
+    handle_errors(async (req, res) => {
+        const data = req.body;
+        console.log('New Score:', data)
+
+        let user_id = data.user_id;
+        let word_id = data.word_id;
+        let guesses_taken = data.guesses_taken;
+
+        let userIDCount = await checkIfUserIDExists(user_id);
+        let wordIDCount = await checkIfWordIDExists(word_id);
+
+        if (userIDCount[0].count == 0)
+            res.status(400).send("User Does Not Exist")
+        else if (wordIDCount[0].count == 0)
+            res.status(400).send("Word Does Not Exist")
+        else {
+            let remainingUserScores = await getRemainingUserScores(user_id);
+
+            if (remainingUserScores[0].calc_max_remaining_scores <= 0)
+                res.status(400).send("More Scores Added Than Words Of Day")
+            else {
+                let result = await addScore(word_id, user_id, guesses_taken)
+                if (result.includes("Invalid"))
+                    res.status(400).send("Invalid Query")
+                else
+                    res.send("Success")
             }
-        });
-
-        if (match == false) {
-            // Check if guess is a valid word using dictionary api
-            // If API not reached, act like it is a valid word and continue
-            try {
-                const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${req.params.word}`);
-                if (response.status != 200) {
-                    res.status(404).send("Invalid Word")
-                }
-            }
-            catch (err) {
-                console.log('Dictionary API did not respond');
-            }
-
-            res.send("t")
-
-            //Compare letters
         }
     })
 );

@@ -6,6 +6,8 @@ databaseChangeLog:
    - include:
       file: ./database/views.sql
    - include:
+      file: ./database/functions.sql
+   - include:
       file: ./database/mockData/users.sql
    - include:
       file: ./database/mockData/words.sql
