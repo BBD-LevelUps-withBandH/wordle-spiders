@@ -31,15 +31,23 @@ const queryWrapper = async(query) => {
         return result.rows;
     } catch (err) {
         console.error('Error executing query', err);
-        throw err;
+        return "Invalid"
     }
 };
 
-const getUsers = async(user) => {
-    let query = `SELECT * FROM users`;
-    return queryWrapper(query);
+const getHighScore = async(user_id) => {
+    let query =`SELECT * FROM seehighscores 
+                WHERE user_id = ${user_id}`;
+    return await queryWrapper(query);
+};
+
+const getWordsOfDay = async() => {
+    let query =`SELECT * FROM words
+                WHERE played_date = CURRENT_DATE`;
+    return await queryWrapper(query);
 };
 
 module.exports = {
-    getUsers
+    getHighScore,
+    getWordsOfDay
 }
