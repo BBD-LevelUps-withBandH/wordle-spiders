@@ -33,16 +33,29 @@ mainRouter.get(
     handle_errors(async (req, res) => {
         let wordsOfDay = await getWordsOfDay();
 
+        //Check for valid word match
         wordsOfDay.forEach((item) => {
             if (item.word == req.params.word.toUpperCase()) {
                 res.send("Correct Word");
-                return "t";
+                return; //Doesn't work, idk why
             }
         });
 
-        //Check with word api
-        
+        // Check if guess is a valid word using dictionary api
+        // If API not reached, act like it is a valid word and continue
+        try {
+            const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${req.params.word}`);
+            if (response.status != 200) {
+                res.status(404).send("Invalid Word")
+            }
+        }
+        catch (err) {
+            console.log('Dictionary API did not respond');
+        }
+
         res.send("t")
+
+        //Compare letters
     })
 );
 
