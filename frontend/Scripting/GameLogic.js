@@ -1,11 +1,16 @@
-const dictionary = [
-    "testy",
-    "hello",
-    "slipe",
-    "slice",
-    "hours",
-]
 
+const dictionary = [
+    "aback",
+    "abase",
+    "abate",
+    "abbey",
+    "abbot",
+    "abhor",
+    "abide",
+    "abled",
+    "hello",
+    "taste"
+]
 
 const gameGrid = document.querySelector("[data-grid]");
 const alertContainer = document.querySelector("[data-alert-container]");
@@ -17,7 +22,7 @@ const FLIP_DURATION = 500;
 const DANCE_DURATION = 500;
 
 
-let targetWord = "hello"; //the word they need to guess 
+let targetWord = "hello" //the word they need to guess 
 
 
 startGame();
@@ -34,7 +39,7 @@ function endGame(){
 
 function mouseClickHandler(e){
     if(e.target.matches("[keyboard-key]")){
-        pressKey(e.target.dataset.key);
+        pressKey(e.target.textContent); //we do this way because it no work other way 
         return
     }
 
@@ -72,6 +77,7 @@ function pressKey(key){
     if(activeTiles.length >= MAX_WORD_LENGTH) return;
 
     const nextTile = gameGrid.querySelector(":not([data-letter])"); //get the first next tile that doesnt have a letter
+    
     nextTile.dataset.letter = key.toLowerCase();
     nextTile.textContent = key; 
     nextTile.dataset.state = "active"; 
@@ -135,7 +141,6 @@ function checkWinState(guessedWord, array){
 
 
 }
-
 
 //Animations\\
 function shakeAnimation(tiles){
