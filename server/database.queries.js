@@ -8,29 +8,25 @@ require('dotenv').config({
 });
   
 const client = new Client({
-user: process.env.USER,
-host: process.env.HOST,
-database: process.env.DATABASE,
-password: process.env.PASSWORD,
-port: process.env.PORT,
-ssl: {
-    require: true,
-    rejectUnauthorized: false
-}
+    user: "dbadmin",
+    host: process.env.HOST,
+    database: "wordle",
+    password: process.env.PASSWORD,
+    port: 5432,
+    ssl: {
+        require: true,
+        rejectUnauthorized: false
+    }
 });
 
 client.connect(function(err) {
-if (err) throw err;
-console.log("Connected!");
+    if (err) throw err;
+    console.log("Connected!");
 });
 
-const getUsers = async (tx) => {
-    let q = `
-    SELECT * FROM users
-    `;
-
+const queryWrapper = async(query) => {
     try {
-        const result = await client.query(q);
+        const result = await client.query(query);
         console.log('Query result:', result.rows);
         return result.rows;
     } catch (err) {
@@ -39,6 +35,10 @@ const getUsers = async (tx) => {
     }
 };
 
+const getUsers = async(user) => {
+    let query = `SELECT * FROM users`;
+    return queryWrapper(query);
+};
 
 module.exports = {
     getUsers
