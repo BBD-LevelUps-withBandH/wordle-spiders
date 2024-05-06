@@ -27,7 +27,7 @@ mainRouter.get("/", function (req, res) {
 });
 
 mainRouter.get(
-    "/highScore/:user_id",
+    "/highScore/:user_id", verifyToken,
     handle_errors(async (req, res) => {
         let result = await getHighScore(req.params.user_id);
 
@@ -54,7 +54,7 @@ mainRouter.get(
 );
 
 mainRouter.post(
-    "/postScore",
+    "/postScore", verifyToken,
     handle_errors(async (req, res) => {
         const data = req.body;
         console.log('New Score:', data)
