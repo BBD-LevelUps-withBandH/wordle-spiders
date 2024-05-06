@@ -59,6 +59,18 @@ const checkIfUserIDExists = async(user_id) => {
     return await queryWrapper(query);
 };
 
+const checkIfUserExistsAndAdd = async (user_id) => {
+    // Check if the user exists
+    let query = `SELECT COUNT(*) AS count FROM users WHERE user_id = ${user_id}`;
+    let result = await queryWrapper(query);
+
+    // If the user does not exist, add them
+    if (result[0].count === 0) {
+        query = `INSERT INTO users (user_id) VALUES (${user_id})`;
+        await queryWrapper(query);
+    }
+};
+
 const checkIfWordIDExists = async(word_id) => {
     let query =`SELECT COUNT(*)
                 FROM words
@@ -78,5 +90,6 @@ module.exports = {
     getRemainingUserScores,
     checkIfUserIDExists,
     checkIfWordIDExists,
-    addScore
+    addScore,
+    checkIfUserExistsAndAdd
 }

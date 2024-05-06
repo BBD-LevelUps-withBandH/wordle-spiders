@@ -4,11 +4,43 @@ const wordApi = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 //gets the word of the day 
 export async function getWordOfTheDay() {
     const request = await fetch(`${baseUrl}/getWordsOfTheDay`);
-    const data = await request.json();
-    console.log(data.word);
-    return data[0].word;
+
+    if(request.status == 401){
+        //user is not logged in we redirect them to the login page
+        console.log("user is unauthorized!");
+    }else{
+        const data = await request.json();
+        console.log(data.word);
+        return data[0].word;
+    }
 }
 
+export async function postScore(score){
+    const postData = {
+        jwt: sessionStorage.getItem('jwtToken'),
+        guesses_taken: score
+    };
+
+    fetch(`${baseUrl}/postScore`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to save score');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Score saved:', data);
+    })
+    .catch(error => {
+        console.error('Error saving score:', error);
+    })
+
+}
 
 //checks to see if the word exists 
 export async function checkWordExistence(word) {
@@ -44,4 +76,11 @@ export async function generateJWT(token){
     .catch(error => {
         console.error('Error:', error);
     });
+}
+
+export async function getUsersHighscore(){
+    const request = await fetch(`${baseUrl}/highScore/:user_id`);
+    const score = await request.json();
+    console.log("users highscore is: " + score);
+    return score;
 }

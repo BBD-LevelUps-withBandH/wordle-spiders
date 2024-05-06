@@ -8,6 +8,7 @@ const {getHighScore,
        getRemainingUserScores,
        checkIfUserIDExists,
        checkIfWordIDExists,
+       checkIfUserExistsAndAdd,
        addScore} = require('../database.queries');
 
 const jwt = require('jsonwebtoken');
@@ -22,7 +23,7 @@ const handle_errors = (fn) => (req, res, next) => {
 };
 
 mainRouter.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, '../../public/Views/main.html'));
+    res.sendFile(path.join(__dirname, '../../public/Views/game.html'));
 });
 
 mainRouter.get(
@@ -40,7 +41,7 @@ mainRouter.get(
 );
 
 mainRouter.get(
-    "/getWordsOfTheDay",
+    "/getWordsOfTheDay", verifyToken,
     handle_errors(async (req, res) => {
         console.log("WE ARE HERE!");
         let result = await getWordsOfTheDay();
@@ -106,7 +107,7 @@ mainRouter.get('/generateJWTToken', (req, res) => {
     // Convert the access token to a JWT
     const jwtToken = jwt.sign({ accessToken, email }, jwtSecret);
     //const jwtToken = jwt.sign({ accessToken }, jwtSecret);
-
+    checkIfUserExistsAndAdd(email);       
     // Send the JWT back to the client
     console.log(jwtToken);
     res.json({ jwtToken });

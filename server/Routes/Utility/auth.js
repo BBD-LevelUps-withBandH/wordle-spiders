@@ -5,14 +5,16 @@ const jwtSecret = crypto.randomBytes(32).toString('hex');
 
 function verifyToken(req, res, next) {
     // Get the token from the request headers
-    const token = req.headers.authorization.split(' ')[1];
+    const token = req.headers.authorization;
 
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });
     }
 
+    const accessToken = req.headers.authorization.split(' ')[1];
+
     // Verify the token
-    jwt.verify(token, jwtSecret, (err, decoded) => {
+    jwt.verify(accessToken, jwtSecret, (err, decoded) => {
         if (err) {
             return res.status(403).json({ message: 'Failed to authenticate token' });
         }
