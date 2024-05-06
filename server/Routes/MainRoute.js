@@ -1,6 +1,7 @@
 var express = require("express")
 const path = require("path");
 const { join } = require("path");
+const { verifyToken, getEmailFromToken } = require("./Utility/auth");
 const mainRouter = express.Router();
 const {getHighScore, 
        getWordsOfTheDay,
@@ -9,6 +10,11 @@ const {getHighScore,
        checkIfWordIDExists,
        addScore} = require('../database.queries');
 
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+       
+const jwtSecret = crypto.randomBytes(32).toString('hex');
+
 const handle_errors = (fn) => (req, res, next) => {  
     Promise.resolve(fn(req, res, next)).catch((error) => {
         next(error);
@@ -16,7 +22,7 @@ const handle_errors = (fn) => (req, res, next) => {
 };
 
 mainRouter.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, '../../public/Views/game.html'));
+    res.sendFile(path.join(__dirname, '../../public/Views/main.html'));
 });
 
 mainRouter.get(
@@ -78,5 +84,32 @@ mainRouter.post(
         }
     })
 );
+
+mainRouter.get('/generateJWTToken', (req, res) => {
+    console.log("WE HIT HERE");
+    const accessToken = req.headers.authorization.split(' ')[1]; 
+    console.log("access token is " + accessToken);
+    let email; 
+  
+    fetch('https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + accessToken)
+            .then(response => response.json())
+            .then(async data => {
+                email = data.email;
+                token = accessToken;
+                console.log('Access Token:', accessToken);
+                console.log('Email:', email);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+    // Convert the access token to a JWT
+    const jwtToken = jwt.sign({ accessToken, email }, jwtSecret);
+    //const jwtToken = jwt.sign({ accessToken }, jwtSecret);
+
+    // Send the JWT back to the client
+    console.log(jwtToken);
+    res.json({ jwtToken });
+});
 
 module.exports = mainRouter;
