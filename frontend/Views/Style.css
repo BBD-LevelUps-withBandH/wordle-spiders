@@ -1,114 +1,121 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 @container (min-width: 600px) {
-  body {
-   background-color: aqua;
-  }
+    body {
+        background-color: aqua;
+    }
 }
 
-body{
-display:flex;
-flex-direction: column;
-align-items: center; 
-justify-content: center;
-margin-top: auto; 
-background-color: #f0efeb;
-overflow: hidden;
-flex-grow: 2;
-height: 100%;
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: auto;
+    background-color: #f0efeb;
+    overflow: hidden;
+    flex-grow: 2;
+    height: 100%;
 }
 
 
 
-.tile{
-  align-items: center;
-  border-radius: 0.5em;
-  background-color: white;
-  box-shadow: rgba(45, 35, 66, 0.4) 0 0.125em 0.25em, rgba(45, 35, 66, 0.3) 0 0.4375em 0.8125em -0.1875em, #D6D6E7 0 -0.1875em 0 inset;
-  color: #36395A;
-  display: inline-flex;
-  font-family: "inter";
-  font-size: 2vw;
-  justify-content: center;
-  overflow: hidden;
-  padding-left: 1em;
-  padding-right: 1em;
-  transition: box-shadow .15s,transform .15s;
-  font-weight: bold;
-  height: 3em;
-  width: 1em;
-  
+.tile {
+    align-items: center;
+    border-radius: 0.5em;
+    background-color: white;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 0.125em 0.25em, rgba(45, 35, 66, 0.3) 0 0.4375em 0.8125em -0.1875em, #D6D6E7 0 -0.1875em 0 inset;
+    color: #36395A;
+    display: inline-flex;
+    font-family: "inter";
+    font-size: 2vw;
+    justify-content: center;
+    overflow: hidden;
+    padding-left: 1em;
+    padding-right: 1em;
+    transition: box-shadow .15s, transform .15s;
+    font-weight: bold;
+    height: 3em;
+    width: 1em;
+
 }
 
 
 
 
 .tile:hover {
-  box-shadow: rgba(45, 35, 66, 0.4) 0 4 8, rgba(45, 35, 66, 0.3) 0 7 13 -3, #D6D6E7 0 -3 0 inset;
-  transform: translateY(-0.5em);
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4 8, rgba(45, 35, 66, 0.3) 0 7 13 -3, #D6D6E7 0 -3 0 inset;
+    transform: translateY(-0.5em);
 }
 
-.welcome,.home{
-  display:flex;
-  flex-direction: row;
-  gap:0.5em ;
-}
-.welcome{
-  margin:3% auto;
+.welcome,
+.home {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
 }
 
-.home{
-  margin:1%auto;
+.welcome {
+    margin: 3% auto;
+}
+
+.home {
+    margin: 1%auto;
 }
 
 
-.title{
-  display:flex;
-  flex-direction: column;
-  align-items: center; 
-  justify-content: center;
-  gap: 3vh;
+.title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3vh;
 }
 
-.green{
-  background-color: #07c04257;
-}
-.yellow{
-  background-color: #daa731a7;
-}
-.red{
-  background-color: #ba084c80;
+.green {
+    background-color: #07c04257;
 }
 
-.button,.home-button{
-  align-items: center;
-  appearance: none;
-  background-color: white;
-  border-radius: 0.5em;
-  box-shadow: rgba(45, 35, 66, 0.4) 0 2 4,rgba(45, 35, 66, 0.3) 0 7 13 -3,#D6D6E7 0 -3 0 inset;
-  box-sizing: border-box;
-  color: #36395A;
-  cursor: pointer;
-  display: inline-flex;
-  font-family: inter;
-  justify-content: center;
-  padding: 1em;
-  transition: box-shadow .15s,transform .15s;
-  touch-action: manipulation;
-  will-change: box-shadow,transform;
-  font-size: 2vw;
-  font-weight: bold;
-  margin:1% auto;
+.yellow {
+    background-color: #daa731a7;
 }
-.button{
-  padding: 1em;
-  height:auto;
-  width:auto;
-}
-.home-button{
 
-  height:2em;
-  width: 8em;
+.red {
+    background-color: #ba084c80;
+}
+
+.button,
+.home-button {
+    align-items: center;
+    appearance: none;
+    background-color: white;
+    border-radius: 0.5em;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2 4, rgba(45, 35, 66, 0.3) 0 7 13 -3, #D6D6E7 0 -3 0 inset;
+    box-sizing: border-box;
+    color: #36395A;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: inter;
+    justify-content: center;
+    padding: 1em;
+    transition: box-shadow .15s, transform .15s;
+    touch-action: manipulation;
+    will-change: box-shadow, transform;
+    font-size: 2vw;
+    font-weight: bold;
+    margin: 1% auto;
+}
+
+.button {
+    padding: 1em;
+    height: auto;
+    width: auto;
+}
+
+.home-button {
+
+    height: 2em;
+    width: 8em;
 }
 
 /* .button:focus {
@@ -121,34 +128,34 @@ height: 100%;
 } */
 
 .button:active {
-  box-shadow: #D6D6E7 0 3px 7px inset;
-  transform: translateY(0.5em);
+    box-shadow: #D6D6E7 0 3px 7px inset;
+    transform: translateY(0.5em);
 }
 
 img {
-  width: 100%;
-  aspect-ratio: 1/1;
-  object-fit:fill;
-  display: block;
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: fill;
+    display: block;
 }
 
 .spirdle {
-  display: flex;
-  width: 40%;
-  height: 40%;
-  opacity:20%;
-  z-index: -2; 
+    display: flex;
+    width: 40%;
+    height: 40%;
+    opacity: 20%;
+    z-index: -2;
 
 }
 
 .right {
-  margin-left: auto;
-  margin-top: -35%;
+    margin-left: auto;
+    margin-top: -35%;
 }
 
 .left {
-  margin-right: 90%;
-  margin-top: -20%;
+    margin-right: 90%;
+    margin-top: -20%;
 }
 
 /* #dialog {
@@ -189,51 +196,47 @@ img {
 }
 
 dialog[open] {
-  opacity: 1;
-  transform: scaleY(1);
+    opacity: 1;
+    transform: scaleY(1);
 }
 
 dialog {
-  opacity: 0;
-  transform: scaleY(0);
-  transition:
-    opacity 0.7s ease-out,
-    transform 0.7s ease-out,
-    overlay 0.7s ease-out allow-discrete,
-    display 0.7s ease-out allow-discrete;
-  /* Equivalent to
+    opacity: 0;
+    transform: scaleY(0);
+    transition:
+        opacity 0.7s ease-out,
+        transform 0.7s ease-out,
+        overlay 0.7s ease-out allow-discrete,
+        display 0.7s ease-out allow-discrete;
+    /* Equivalent to
   transition: all 0.7s allow-discrete; */
 }
 
 @starting-style {
-  dialog[open] {
-    opacity: 0;
-    transform: scaleY(0);
-  }
+    dialog[open] {
+        opacity: 0;
+        transform: scaleY(0);
+    }
 }
 
 dialog::backdrop {
-  background-color: rgb(0 0 0 / 0%);
-  transition:
-    display 0.7s allow-discrete,
-    overlay 0.7s allow-discrete,
-    background-color 0.7s;
-  /* Equivalent to
+    background-color: rgb(0 0 0 / 0%);
+    transition:
+        display 0.7s allow-discrete,
+        overlay 0.7s allow-discrete,
+        background-color 0.7s;
+    /* Equivalent to
   transition: all 0.7s allow-discrete; */
 }
 
 dialog[open]::backdrop {
-  background-color: rgb(0 0 0 / 25%);
+    background-color: rgb(0 0 0 / 25%);
 }
-  
+
 @starting-style {
-  dialog[open]::backdrop {
-    background-color: rgb(0 0 0 / 0%);
-  }
-} */
+    dialog[open]::backdrop {
+        background-color: rgb(0 0 0 / 0%);
+    }
+}
 
-
-
-
-
-
+*/
