@@ -20,7 +20,7 @@ body {
 
 
 
-.tile {
+.headingtile,.htptile {
     align-items: center;
     border-radius: 0.5em;
     background-color: white;
@@ -28,7 +28,6 @@ body {
     color: #36395A;
     display: inline-flex;
     font-family: "inter";
-    font-size: 2vw;
     justify-content: center;
     overflow: hidden;
     padding-left: 1em;
@@ -37,13 +36,17 @@ body {
     font-weight: bold;
     height: 3em;
     width: 1em;
+}
+
+.headingtile{
+  font-size: 2em;
+}
+.htptile{
+  font-size: 1em;
 
 }
 
-
-
-
-.tile:hover {
+.headingtile:hover {
     box-shadow: rgba(45, 35, 66, 0.4) 0 4 8, rgba(45, 35, 66, 0.3) 0 7 13 -3, #D6D6E7 0 -3 0 inset;
     transform: translateY(-0.5em);
 }
@@ -97,25 +100,30 @@ body {
     display: inline-flex;
     font-family: inter;
     justify-content: center;
-    padding: 1em;
     transition: box-shadow .15s, transform .15s;
     touch-action: manipulation;
     will-change: box-shadow, transform;
-    font-size: 2vw;
-    font-weight: bold;
     margin: 1% auto;
 }
 
 .button {
+  font-size: 2em;
     padding: 1em;
     height: auto;
     width: auto;
+    font-weight: bold;
 }
 
 .home-button {
-
     height: 2em;
     width: 8em;
+}
+
+.close-button{
+  font-size: 1em;
+  background-color: white;
+   height: 2em;
+    width: 7em;
 }
 
 /* .button:focus {
@@ -158,85 +166,102 @@ img {
     margin-top: -20%;
 }
 
-/* #dialog {
-  padding: 1em;
-  max-width: 75%;
-  min-height: 40ch;
-  border: 0;
-  box-shadow: 0 0 1em rgb(0 0 0 / .3);
-  border-radius:2em;
-  text-align:center;
-  background-color: #f0efeb;
-  border-color:#f0efeb;
-  font-family: 'Inter';
-  font-size: 1.5em;
-  color: white;
-  align-items: center; 
-  justify-content: center;
-  flex-direction: column; 
-  overflow: hidden;
+#dialog {
+    padding: 3em;
+    max-width: 75%;
+    min-height: 40ch;
+    border: 0;
+    box-shadow: 0 0 1em rgb(0 0 0 / .3);
+    border-radius:2em;
+    text-align:center;
+    background-color:white;
+    border-color:#f0efeb;
+    font-family: 'inter', sans-serif;
+    font-size: 1em;
+    color: black;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; 
+    overflow: hidden;
+    line-height: 1.5;
+    
   
-
-  & > * {
-    margin: 0 0 0.5rem 0;
+    & > * {
+      margin: 0 0 0.5rem 0;
+    }
   }
-}
-.order {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1em;
-  padding: 1em;
-}
-.How, .To, .play {
-  display: flex;
-  flex-direction: row;
-  align-items: center; /* Center vertically */
-}
-
-dialog[open] {
+  .modal::backdrop {
+    background: rgb(72,79,131 / 0.4);
+  }
+  
+  
+  .order {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+  }
+  .How, .To, .play {
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Center vertically */
+ 
+  }
+  
+  
+  
+  
+  /*   Open state of the dialog  */
+  dialog[open] {
     opacity: 1;
     transform: scaleY(1);
-}
-
-dialog {
+  }
+  
+  /*   Closed state of the dialog   */
+  dialog {
     opacity: 0;
     transform: scaleY(0);
     transition:
-        opacity 0.7s ease-out,
-        transform 0.7s ease-out,
-        overlay 0.7s ease-out allow-discrete,
-        display 0.7s ease-out allow-discrete;
+      opacity 0.7s ease-out,
+      transform 0.7s ease-out,
+      overlay 0.7s ease-out allow-discrete,
+      display 0.7s ease-out allow-discrete;
     /* Equivalent to
-  transition: all 0.7s allow-discrete; */
-}
-
-@starting-style {
+    transition: all 0.7s allow-discrete; */
+  }
+  
+  /*   Before-open state  */
+  /* Needs to be after the previous dialog[open] rule to take effect,
+      as the specificity is the same */
+  @starting-style {
     dialog[open] {
-        opacity: 0;
-        transform: scaleY(0);
+      opacity: 0;
+      transform: scaleY(0);
     }
-}
-
-dialog::backdrop {
+  }
+  
+  /* Transition the :backdrop when the dialog modal is promoted to the top layer */
+  dialog::backdrop {
     background-color: rgb(0 0 0 / 0%);
     transition:
-        display 0.7s allow-discrete,
-        overlay 0.7s allow-discrete,
-        background-color 0.7s;
+      display 0.7s allow-discrete,
+      overlay 0.7s allow-discrete,
+      background-color 0.7s;
     /* Equivalent to
-  transition: all 0.7s allow-discrete; */
-}
-
-dialog[open]::backdrop {
+    transition: all 0.7s allow-discrete; */
+  }
+  
+  dialog[open]::backdrop {
     background-color: rgb(0 0 0 / 25%);
-}
-
-@starting-style {
+  }
+  
+  /* This starting-style rule cannot be nested inside the above selector
+  because the nesting selector cannot represent pseudo-elements. */
+  
+  @starting-style {
     dialog[open]::backdrop {
-        background-color: rgb(0 0 0 / 0%);
+      background-color: rgb(0 0 0 / 0%);
     }
-}
+  }
 
-*/
