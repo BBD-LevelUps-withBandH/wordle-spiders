@@ -23,7 +23,7 @@ const handle_errors = (fn) => (req, res, next) => {
 };
 
 mainRouter.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, '../../public/Views/game.html'));
+    res.sendFile(path.join(__dirname, '../../public/Views/main.html'));
 });
 
 mainRouter.get(
@@ -59,7 +59,7 @@ mainRouter.post(
         const data = req.body;
         console.log('New Score:', data)
 
-        let user_id = data.user_id;
+        let user_id = getEmailFromToken(req.headers.authorization);
         let word_id = data.word_id;
         let guesses_taken = data.guesses_taken;
 

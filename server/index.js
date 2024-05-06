@@ -4,6 +4,7 @@ const http = require('http');
 const cors = require('cors');
 
 const mainRouter = require("./Routes/MainRoute");
+const gameRouter = require("./Routes/GameRoute");
 
 const path = require("path");
 const app = express();
@@ -17,6 +18,7 @@ app.use(cors());
 
 
 app.use("/", mainRouter);
+app.get("/game", gameRouter);
 
 app.use(express.static(path.join(__dirname, '../public/Scripting/')));
 app.use(express.static(path.join(__dirname, '../public/Styling/')));

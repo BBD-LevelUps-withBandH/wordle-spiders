@@ -10,6 +10,7 @@ export async function getWordOfTheDay() {
         console.log("user is unauthorized!");
     }else{
         const data = await request.json();
+        sessionStorage.setItem("word", data);
         console.log(data.word);
         return data[0].word;
     }
@@ -18,6 +19,7 @@ export async function getWordOfTheDay() {
 export async function postScore(score){
     const postData = {
         jwt: sessionStorage.getItem('jwtToken'),
+        word_id: sessionStorage.getItem('word'),
         guesses_taken: score
     };
 
