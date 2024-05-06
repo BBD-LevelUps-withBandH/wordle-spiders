@@ -1,3 +1,10 @@
+import { getWordOfTheDay, checkWordExistence } from './Api.js';
+
+let word = await getWordOfTheDay();
+let targetWord = word.toLowerCase();
+console.log(targetWord);
+
+
 
 const dictionary = [
     "aback",
@@ -9,7 +16,8 @@ const dictionary = [
     "abide",
     "abled",
     "hello",
-    "taste"
+    "taste",
+    "venom"
 ]
 
 const gameGrid = document.querySelector("[data-grid]");
@@ -21,9 +29,7 @@ const MAX_WORD_LENGTH = 5;
 const FLIP_DURATION = 500;
 const DANCE_DURATION = 500;
 
-
-let targetWord = "hello" //the word they need to guess 
-
+//let targetWord = worldeWord.toLowerCase(); //the word they need to guess 
 
 startGame();
 
@@ -93,7 +99,7 @@ function deleteKey(){
     delete lastTile.dataset.letter;
 }
 
-function submitGuess(){
+async function submitGuess(){
     let activeTiles = [...getActiveTiles()];
     if(activeTiles.length != MAX_WORD_LENGTH){
         showAlert("Word is not long enough!", 1000);
@@ -107,11 +113,22 @@ function submitGuess(){
 
     }, "")
 
-    if(!dictionary.includes(guessedWord)){
+    // if(!dictionary.includes(guessedWord)){
+    //     showAlert("Not a word!", 1000);
+    //     shakeAnimation(activeTiles);
+    //     return
+    // }
+
+    let checkWord = await checkWordExistence(guessedWord.toLowerCase());
+    console.log(checkWord);
+
+    if(checkWord === 404){
+        console.log("WORD does not exists!");
         showAlert("Not a word!", 1000);
         shakeAnimation(activeTiles);
-        return
+        return;
     }
+
 
     endGame();
 

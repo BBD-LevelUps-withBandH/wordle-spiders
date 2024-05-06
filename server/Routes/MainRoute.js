@@ -16,7 +16,7 @@ const handle_errors = (fn) => (req, res, next) => {
 };
 
 mainRouter.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, '../../frontend/Views/main.html'));
+    res.sendFile(path.join(__dirname, '../../public/Views/game.html'));
 });
 
 mainRouter.get(
@@ -36,6 +36,7 @@ mainRouter.get(
 mainRouter.get(
     "/getWordsOfTheDay",
     handle_errors(async (req, res) => {
+        console.log("WE ARE HERE!");
         let result = await getWordsOfTheDay();
         
         if (result.length == 0)
