@@ -23,8 +23,13 @@ const handle_errors = (fn) => (req, res, next) => {
 };
 
 mainRouter.get("/", function (req, res) {
-    res.send("Health is good");
+    //res.send("Health is good");
+    res.sendFile(path.join(__dirname, 'frontend', 'main.html'));
 });
+
+mainRouter.get("/game", function (req, res){
+    res.sendFile(path.join(__dirname, 'frontend', 'game.html'));
+})
 
 mainRouter.get(
     "/highScore/:user_id", verifyGoogleToken,

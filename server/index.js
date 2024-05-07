@@ -14,7 +14,7 @@ require('dotenv').config({
   path: path.join(__dirname, 'db.env')
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,9 +23,9 @@ app.use(cors());
 
 app.use("/", mainRouter);
 
-app.use(express.static(path.join(__dirname, '../public/Scripting/')));
-app.use(express.static(path.join(__dirname, '../public/Styling/')));
-app.use(express.static(path.join(__dirname, '../public/Views/')));
+app.use(express.static(path.join(__dirname, '../frontend/Scripting/')));
+app.use(express.static(path.join(__dirname, '../frontend/Styling/')));
+app.use(express.static(path.join(__dirname, '../frontend/Views/')));
 
 
 
