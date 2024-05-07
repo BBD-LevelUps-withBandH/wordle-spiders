@@ -3,13 +3,6 @@ resource "aws_s3_bucket" "frontend_bucket" {
   force_destroy = true
 }
 
-resource "aws_s3_object" "main" {
-  bucket       = aws_s3_bucket.frontend_bucket.id
-  key          = "main.html"
-  source       = "../frontend/Views/main.html"
-  content_type = "text/html"
-}
-
 resource "aws_s3_bucket_ownership_controls" "frontend_bucket" {
   bucket = aws_s3_bucket.frontend_bucket.id
   rule {
