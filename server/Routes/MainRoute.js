@@ -11,11 +11,6 @@ const {getHighScore,
        checkIfUserExistsAndAdd,
        addScore} = require('../database.queries');
 
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-       
-const jwtSecret = crypto.randomBytes(32).toString('hex');
-
 const handle_errors = (fn) => (req, res, next) => {  
     Promise.resolve(fn(req, res, next)).catch((error) => {
         next(error);
@@ -23,14 +18,13 @@ const handle_errors = (fn) => (req, res, next) => {
 };
 
 mainRouter.get("/", function (req, res) {
-    //res.send("Health is good");
-    //res.sendFile(path.join(__dirname, 'frontend', 'main.html'));
-    res.sendFile(path.join(__dirname, '../../frontend/Views/main.html'));
+    res.send("Health is good");
+    //res.sendFile(path.join(__dirname, '../../frontend/Views/main.html'));
 });
 
-mainRouter.get("/game", function (req, res){
-    res.sendFile(path.join(__dirname, '../../frontend/Views/game.html'));
-})
+// mainRouter.get("/game", function (req, res){
+//     res.sendFile(path.join(__dirname, '../../frontend/Views/game.html'));
+// })
 
 mainRouter.get(
     "/highScore/:user_id", verifyGoogleToken,
