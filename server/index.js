@@ -8,7 +8,7 @@ const mainRouter = require("./Routes/MainRoute");
 
 const path = require("path");
 const app = express();
-const port = 5000;
+const port = 8080;
 
 require('dotenv').config({
   path: path.join(__dirname, 'db.env')

@@ -9,9 +9,15 @@ require('dotenv').config({
   
 const client = new Client({
     user: "dbadmin",
+<<<<<<< HEAD
     host: "wordle.cidtxn2ndtwc.eu-west-1.rds.amazonaws.com",//process.env.HOST,
     database: "wordle",
     password: "1#j|2)dKTlvMbEJoGp<MQQ[N}ton", //process.env.PASSWORD, 
+=======
+    host: process.env.DB_URL,
+    database: "wordle",
+    password: process.env.DB_PASSWORD,
+>>>>>>> main
     port: 5432,
     ssl: {
         require: true,

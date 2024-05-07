@@ -1,4 +1,8 @@
 {
+  "name": "spirdle",
+  "version": "1.0.0",
+  "description": "worlde but spiders",
+  "private": true,
   "dependencies": {
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -10,12 +14,10 @@
     "path": "^0.12.7",
     "pg": "^8.11.5"
   },
-  "name": "spirdle",
-  "version": "1.0.0",
-  "description": "worlde but spiders",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC"

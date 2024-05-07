@@ -23,11 +23,7 @@ const handle_errors = (fn) => (req, res, next) => {
 };
 
 mainRouter.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, '../../public/Views/main.html'));
-});
-
-mainRouter.get("/game", function (req, res) {
-    res.sendFile(path.join(__dirname, '../../public/Views/game.html'));
+    res.send("Health is good");
 });
 
 mainRouter.get(
@@ -96,6 +92,7 @@ mainRouter.post(
     })
 );
 
+//rename this 
 mainRouter.get('/generateJWTToken', async(req, res) => {
     console.log("WE HIT HERE");
     const accessToken = req.headers.authorization.split(' ')[1]; 
