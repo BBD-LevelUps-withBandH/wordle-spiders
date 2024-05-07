@@ -1,24 +1,10 @@
 import { getWordOfTheDay, checkWordExistence, postScore } from './Api.js';
 
 let word = await getWordOfTheDay();
+checkWord();
 let targetWord = word.toLowerCase();
 console.log(targetWord);
 let guessCount = 0;
-
-
-const dictionary = [
-    "aback",
-    "abase",
-    "abate",
-    "abbey",
-    "abbot",
-    "abhor",
-    "abide",
-    "abled",
-    "hello",
-    "taste",
-    "venom"
-]
 
 const gameGrid = document.querySelector("[data-grid]");
 const alertContainer = document.querySelector("[data-alert-container]");
@@ -31,7 +17,7 @@ const DANCE_DURATION = 500;
 
 //let targetWord = worldeWord.toLowerCase(); //the word they need to guess 
 
-startGame();
+//startGame();
 
 function startGame(){
     document.addEventListener("click", mouseClickHandler);
@@ -41,6 +27,15 @@ function startGame(){
 function endGame(){
     document.removeEventListener("click", mouseClickHandler);
     document.removeEventListener("keydown", keyPressHandler);
+}
+
+function checkWord(){
+    if(word === 401){
+        showAlert("Something went wrong!");
+        endGame();
+    }else{
+        startGame();
+    }
 }
 
 function mouseClickHandler(e){
@@ -149,6 +144,7 @@ function checkWinState(guessedWord, array){
         danceAnimation(array);
         endGame();
         console.log("guess score is: " + guessCount);
+        postScore(guessCount);
         return
     }
 
@@ -156,6 +152,7 @@ function checkWinState(guessedWord, array){
     if (remainingTiles.length === 0) {
         showAlert("The word was " + targetWord.toUpperCase() , null);
         endGame();
+        postScore(guessCount);
     }
 
 

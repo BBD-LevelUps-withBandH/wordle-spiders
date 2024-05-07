@@ -31,10 +31,11 @@ mainRouter.get("/game", function (req, res) {
 });
 
 mainRouter.get(
-    "/highScore/:user_id",
+    "/highScore/:user_id", verifyGoogleToken,
     handle_errors(async (req, res) => {
-        let result = await getHighScore(req.params.user_id);
-
+        let email = req.email;
+        let result = await getHighScore(email); //req.params.user_id
+        
         if (result.includes("Invalid"))
             res.status(400).send("Invalid Query")
         else if (result.length == 0)
@@ -58,14 +59,19 @@ mainRouter.get(
 );
 
 mainRouter.post(
-    "/postScore",
+    "/postScore", verifyGoogleToken,
     handle_errors(async (req, res) => {
+        let email = req.email;
         const data = req.body;
         console.log('New Score:', data)
 
-        let user_id = getEmailFromToken(req.headers.authorization);
+        let user_id = email; //req.headers.authorization
         let word_id = data.word_id;
         let guesses_taken = data.guesses_taken;
+
+        console.log(word_id);
+        console.log(guesses_taken);
+        console.log(user_id);
 
         let userIDCount = await checkIfUserIDExists(user_id);
         let wordIDCount = await checkIfWordIDExists(word_id);
@@ -90,30 +96,26 @@ mainRouter.post(
     })
 );
 
-mainRouter.get('/generateJWTToken', (req, res) => {
+mainRouter.get('/generateJWTToken', async(req, res) => {
     console.log("WE HIT HERE");
     const accessToken = req.headers.authorization.split(' ')[1]; 
     console.log("access token is " + accessToken);
     let email; 
-    let token; 
   
-    fetch('https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + accessToken)
+    await fetch('https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + accessToken)
             .then(response => response.json())
             .then(async data => {
-                email = data.email;
-                //token = accessToken;
-                console.log('Access Token:', accessToken);
+                email = await data.email;
+                
                 console.log('Email:', email);
             })
             .catch(error => {
                 console.error('Error:', error);
     });
 
-    // Convert the access token to a JWT
-    //const jwtToken = jwt.sign({ accessToken, email }, jwtSecret);
-    //const jwtToken = jwt.sign({ accessToken }, jwtSecret);
-    //checkIfUserExistsAndAdd(email);       
-    // Send the JWT back to the client
+  
+    checkIfUserExistsAndAdd(email);       
+    
     console.log(email);
     res.json({ email });
 });

@@ -15,24 +15,35 @@ export async function getWordOfTheDay() {
     if(request.status == 401){
         //user is not logged in we redirect them to the login page
         console.log("user is unauthorized!");
+        return request.status;
     }else{
         const data = await request.json();
-        sessionStorage.setItem("word", data);
-        console.log(data.word);
+        
+        
+        console.log("WORD ARE: " + data[0].word);
+    
+        sessionStorage.setItem("word", data[0].word);
+        sessionStorage.setItem("word_id", data[0].word_id);
         return data[0].word;
     }
 }
 
 export async function postScore(score){
+    let token = sessionStorage.getItem('accessToken');
+    let word = sessionStorage.getItem('word');
+    let wordID = sessionStorage.getItem('word_id');
+
+
     const postData = {
-        jwt: sessionStorage.getItem('jwtToken'),
-        word_id: sessionStorage.getItem('word'),
+        word_id: wordID,
+        word: word,
         guesses_taken: score
     };
 
     fetch(`${baseUrl}/postScore`, {
         method: 'POST',
         headers: {
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(postData)
@@ -87,7 +98,13 @@ export async function generateJWT(token){
 }
 
 export async function getUsersHighscore(){
-    const request = await fetch(`${baseUrl}/highScore/:user_id`);
+    let token = sessionStorage.getItem('accessToken');
+    const request = await fetch(`${baseUrl}/highScore/:user_id`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
     const score = await request.json();
     console.log("users highscore is: " + score);
     return score;

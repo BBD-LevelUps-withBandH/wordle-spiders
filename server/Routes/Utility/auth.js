@@ -46,11 +46,13 @@ async function verifyGoogleToken(req, res, next) {
     try {
       const response = await fetch(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`);
       const data = await response.json();
+      let email = await data.email;
   
       if (response.ok && data.audience === '890978323670-1gn2pk7r9dfttucr7f6je4qu39sd9ckb.apps.googleusercontent.com') {
         // Token is valid
         req.decodedToken = data;
         console.log("authorized!");
+        req.email = email;
         next();
       } else {
         // Token is invalid

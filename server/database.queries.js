@@ -26,6 +26,7 @@ client.connect(function(err) {
 
 const queryWrapper = async(query) => {
     try {
+        console.log(query);
         const result = await client.query(query);
         console.log('Query result:', result.rows);
         return result.rows;
@@ -35,9 +36,9 @@ const queryWrapper = async(query) => {
     }
 };
 
-const getHighScore = async(user_id) => {
+const getHighScore = async(user_email) => {
     let query =`SELECT * FROM see_high_scores 
-                WHERE user_id = ${user_id}`;
+                WHERE user_email = '${user_email}'`;
     return await queryWrapper(query);
 };
 
@@ -48,38 +49,55 @@ const getWordsOfTheDay = async() => {
 };
 
 const getRemainingUserScores = async(user_id) => {
-    let query =`SELECT * FROM calc_max_remaining_scores(${user_id})`;
+    let query =`CALL calc_max_remaining_scores((select user_id from users u where u.user_email = '${user_id}'))`;
+    console.log(query, 'remaing user scores');
     return await queryWrapper(query);
 };
 
-const checkIfUserIDExists = async(user_id) => {
+const checkIfUserIDExists = async(user_email) => {
     let query =`SELECT COUNT(*)
                 FROM users
-                WHERE user_id = ${user_id}`;
+                WHERE user_email = '${user_email}'`;
     return await queryWrapper(query);
 };
 
 const checkIfUserExistsAndAdd = async (user_id) => {
-    // Check if the user exists
-    let query = `SELECT COUNT(*) AS count FROM users WHERE user_id = ${user_id}`;
+
+
+    let query = `insert into users(user_email)
+    select '${user_id}' where not exists 
+    (select user_email from users u where u.user_email = '${user_id}')`
+
+    console.log(query);
+
     let result = await queryWrapper(query);
+    console.log(result);
+    
+    
+    // Check if the user exists
+    //console.log("we are trying to add user in db!");
+   // let query = `SELECT COUNT(*) AS count FROM users WHERE user_id = ${user_id}`;
+    //let result = await queryWrapper(query);
+
+    //console.log("the result it: " + result);
 
     // If the user does not exist, add them
-    if (result[0].count === 0) {
-        query = `INSERT INTO users (user_id) VALUES (${user_id})`;
-        await queryWrapper(query);
-    }
+    // if (result[0].count === 0) {
+    //     query = `INSERT INTO users (user_id) VALUES (${user_id})`;
+    //     await queryWrapper(query);
+    //     con
+    // }
 };
 
 const checkIfWordIDExists = async(word_id) => {
     let query =`SELECT COUNT(*)
                 FROM words
-                WHERE word_id = ${word_id}`;
+                WHERE word_id = '${word_id}'`;
     return await queryWrapper(query);
 };
 
 const addScore = async(word_id, user_id, guesses_taken) => {
-    let query =`INSERT INTO scores (guesses_taken, word_id, user_id) VALUES
+    let query =`INSERT INTO scores (guesses_taken, word, user_email) VALUES
                 (${guesses_taken}, ${word_id}, ${user_id});`;
     return await queryWrapper(query);
 };
