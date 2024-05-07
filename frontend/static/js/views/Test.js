@@ -12,7 +12,7 @@ export default class extends AbstractView {
             <p>Testing stuffs.</p>
 
             <p>
-            <a href="/" data-link>View Dash</a>.
+            <a data-dash data-link>View Dash</a>.
             </p>
         `;
     }

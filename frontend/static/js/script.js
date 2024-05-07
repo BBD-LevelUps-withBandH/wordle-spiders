@@ -1,48 +1,27 @@
 import Dashboard from "./views/Dashboard.js";
 import Tests from "./views/Test.js";
 
-const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
-
-const getParams = match => {
-    const values = match.result.slice(1);
-    const keys = Array.from(match.route.path.matchAll(/:(\w+)/g)).map(result => result[1]);
-
-    return Object.fromEntries(keys.map((key, i) => {
-        return [key, values[i]];
-    }));
-};
-
-const navigateTo = url => {
-    history.pushState(null, null, url);
-    router();
-};
+// const navigateTo = url => {
+//     history.pushState(null, null, url);
+//     router();
+// };
 
 const router = async () => {
-    const routes = [
-        { path: "/", view: Dashboard },
-        { path: "/tests", view: Tests }
-    ];
-
-    // Test each route for potential match
-    const potentialMatches = routes.map(route => {
-        return {
-            route: route,
-            isMatch: location.pathname === route.path
-        };
-    });
-
-    let match = potentialMatches.find(potentialMatch => potentialMatch.isMatch);
-
-    if (!match) {
-        match = {
-            route: routes[0],
-            isMatch: true
-        };
+    let view = localStorage.getItem('view');
+    if(view == 'Dashboard'){
+        view = Dashboard;
+    } else {
+        view = Tests;
     }
 
-    const view = new match.route.view();
 
-    document.querySelector("#app").innerHTML = await view.getHtml();
+    if(view){
+        const test = new view();
+        document.querySelector("#app").innerHTML = await test.getHtml();
+    } else {
+        const dash = new Dashboard();
+        document.querySelector("#app").innerHTML = await dash.getHtml();
+    }
 };
 
 window.addEventListener("popstate", router);
@@ -51,8 +30,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.addEventListener("click", e => {
         if (e.target.matches("[data-link]")) {
             e.preventDefault();
-            navigateTo(e.target.href);
+            if (e.target.matches("[data-dash]")) {
+                e.preventDefault();
+                localStorage.setItem('view', 'Dashboard');
+            }
+            if (e.target.matches("[data-tests]")) {
+                e.preventDefault();
+                localStorage.setItem('view', 'Tests');
+            }
         }
+        router();
     });
 
     router();
