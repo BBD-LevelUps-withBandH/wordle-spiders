@@ -15,7 +15,7 @@ function login() {
         form.setAttribute('action', oauthEndpoint);
     
         let params = {
-            'client_id': '890978323670-1gn2pk7r9dfttucr7f6je4qu39sd9ckb.apps.googleusercontent.com',
+            'client_id': '', //google client id 
             'redirect_uri':'http://localhost:8080',
             'response_type':'token',
             'scope':'https://www.googleapis.com/auth/userinfo.profile',
