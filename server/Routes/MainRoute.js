@@ -24,11 +24,12 @@ const handle_errors = (fn) => (req, res, next) => {
 
 mainRouter.get("/", function (req, res) {
     //res.send("Health is good");
-    res.sendFile(path.join(__dirname, 'frontend', 'main.html'));
+    //res.sendFile(path.join(__dirname, 'frontend', 'main.html'));
+    res.sendFile(path.join(__dirname, '../../frontend/Views/main.html'));
 });
 
 mainRouter.get("/game", function (req, res){
-    res.sendFile(path.join(__dirname, 'frontend', 'game.html'));
+    res.sendFile(path.join(__dirname, '../../frontend/Views/game.html'));
 })
 
 mainRouter.get(

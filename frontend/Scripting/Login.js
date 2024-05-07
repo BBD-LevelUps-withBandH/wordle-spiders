@@ -16,7 +16,7 @@ function login() {
     
         let params = {
             'client_id': '890978323670-1gn2pk7r9dfttucr7f6je4qu39sd9ckb.apps.googleusercontent.com',
-            'redirect_uri':'http://localhost:5000',
+            'redirect_uri':'http://localhost:8080',
             'response_type':'token',
             'scope':'https://www.googleapis.com/auth/userinfo.profile',
             'include_granted_scopes': 'true',
