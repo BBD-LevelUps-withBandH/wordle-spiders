@@ -23,7 +23,10 @@ $$
 LANGUAGE plpgsql;
 --rollback DROP FUNCTION "calc_max_remaining_scores";
 
-CREATE OR REPLACE FUNCTION public.get_average_score_for_word(word_of_the_day TEXT)
+--changeset sam:function:get_average_score_for_word runOnChange:true
+CREATE OR REPLACE FUNCTION get_average_score_for_word(
+	word_of_the_day TEXT
+)
 RETURNS NUMERIC AS
 $$
 DECLARE
@@ -45,4 +48,4 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
-
+--rollback DROP FUNCTION "get_average_score_for_word";
