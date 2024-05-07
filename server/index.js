@@ -6,7 +6,7 @@ const mainRouter = require("./Routes/MainRoute");
 
 const path = require("path");
 const app = express();
-const port = 5000;
+const port = 8080;
 
 app.use(bodyParser.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
