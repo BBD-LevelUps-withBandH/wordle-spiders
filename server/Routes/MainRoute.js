@@ -16,7 +16,7 @@ const handle_errors = (fn) => (req, res, next) => {
 };
 
 mainRouter.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, '../../frontend/Views/main.html'));
+    res.send("Health is good");
 });
 
 mainRouter.get(
