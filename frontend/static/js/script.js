@@ -9,10 +9,10 @@ const pageType = {
 };
 
 const state = {
-    page: pageType.LOGIN
+    page: pageType.LOGIN,
+    grid: new Array(),
+    datasetState: new Array()
 };
-
-
 
 
 
@@ -50,11 +50,24 @@ const DANCE_DURATION = 500;
 // startGame();
 
 export function startGame(){
+    checkLocalStorageForState();
     gameGrid = document.querySelector("[data-grid]");
     alertContainer = document.querySelector("[data-alert-container]");
     keyboard = document.querySelector("[data-keyboard]");
     document.addEventListener("click", mouseClickHandler);
     document.addEventListener("keydown", keyPressHandler);
+}
+
+
+
+function checkLocalStorageForState(){
+    let localState = sessionStorage.getItem('state');
+    if(localState){
+        localState = JSON.parse(localState);
+        state.page = localState.page;
+        state.grid = localState.grid;
+        state.datasetState = localState.datasetState;
+    }
 }
 
 function endGame(){
@@ -105,8 +118,9 @@ function pressKey(key){
     
     nextTile.dataset.letter = key.toLowerCase();
     nextTile.textContent = key; 
-    nextTile.dataset.state = "active"; 
-
+    nextTile.dataset.state = "active";
+    state.grid.push(key.toLowerCase());
+    state.datasetState.push('active');
 }
 
 function deleteKey(){
@@ -116,6 +130,8 @@ function deleteKey(){
     lastTile.textContent = "";
     delete lastTile.dataset.state;
     delete lastTile.dataset.letter;
+    state.grid.pop();
+    state.datasetState.pop();
 }
 
 async function submitGuess(){
@@ -203,7 +219,7 @@ function flipTiles(tile, index, array, guessedWord){
 
         if(targetWord[index] == letter){ //letter is in the correct location 
             tile.dataset.state = "right"
-            // key.classList.add("right");
+            
 
         }else if(targetWord.includes(letter)){
             tile.dataset.state = "wrong-location"
@@ -212,6 +228,9 @@ function flipTiles(tile, index, array, guessedWord){
             tile.dataset.state = "wrong"
             // key.classList.add("wrong");
         }
+
+        if(index===0) state.datasetState[state.datasetState.length - 5] = tile.dataset.state;
+        else state.datasetState[state.datasetState.length - (5-index)] = tile.dataset.state;
 
         if(index === array.length -1){
             tile.addEventListener("transitionend", () =>{
@@ -394,11 +413,19 @@ function buildGame(){
 }
 
 function makeBoard(container){
+    console.log('making board');
     for(let i = 0; i < 30; i++){
-      let sec = document.createElement('span');
-      sec.className = 'tile';
-      if(i===0) sec.dataset.stateWrong = '';
-      container.appendChild(sec);
+        let sec = document.createElement('span');
+        sec.className = 'tile';
+        if(i===0) sec.dataset.stateWrong = '';
+
+        if(i<state.grid.length){
+            sec.innerText = state.grid[i];
+            sec.dataset.letter = state.grid[i];
+            sec.dataset.state = state.datasetState[i];
+        }
+
+        container.appendChild(sec);
     }
   }
 
@@ -410,6 +437,7 @@ function switchScreens(){
 }
 
 function setupScreen(){
+    console.log(state);
     switch(state.page){
         case pageType.LOGIN:
         case pageType.MAIN:
@@ -423,4 +451,14 @@ function setupScreen(){
     }
 }
 
+window.addEventListener('beforeunload', function (event) {
+    sessionStorage.setItem('state', JSON.stringify(state));
+    console.log(state);
+    console.log("herere");
+    event.preventDefault();
+});
+
+
+checkLocalStorageForState();
+console.log(state);
 setupScreen();
