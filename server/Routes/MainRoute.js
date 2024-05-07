@@ -1,7 +1,7 @@
 var express = require("express")
 const path = require("path");
 const { join } = require("path");
-const { verifyToken, getEmailFromToken } = require("./Utility/auth");
+const { verifyToken, getEmailFromToken, verifyGoogleToken } = require("./Utility/auth");
 const mainRouter = express.Router();
 const {getHighScore, 
        getWordsOfTheDay,
@@ -26,8 +26,12 @@ mainRouter.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, '../../public/Views/main.html'));
 });
 
+mainRouter.get("/game", function (req, res) {
+    res.sendFile(path.join(__dirname, '../../public/Views/game.html'));
+});
+
 mainRouter.get(
-    "/highScore/:user_id", verifyToken,
+    "/highScore/:user_id",
     handle_errors(async (req, res) => {
         let result = await getHighScore(req.params.user_id);
 
@@ -41,7 +45,7 @@ mainRouter.get(
 );
 
 mainRouter.get(
-    "/getWordsOfTheDay", verifyToken,
+    "/getWordsOfTheDay", verifyGoogleToken,
     handle_errors(async (req, res) => {
         console.log("WE ARE HERE!");
         let result = await getWordsOfTheDay();
@@ -54,7 +58,7 @@ mainRouter.get(
 );
 
 mainRouter.post(
-    "/postScore", verifyToken,
+    "/postScore",
     handle_errors(async (req, res) => {
         const data = req.body;
         console.log('New Score:', data)
@@ -91,26 +95,27 @@ mainRouter.get('/generateJWTToken', (req, res) => {
     const accessToken = req.headers.authorization.split(' ')[1]; 
     console.log("access token is " + accessToken);
     let email; 
+    let token; 
   
     fetch('https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + accessToken)
             .then(response => response.json())
             .then(async data => {
                 email = data.email;
-                token = accessToken;
+                //token = accessToken;
                 console.log('Access Token:', accessToken);
                 console.log('Email:', email);
             })
             .catch(error => {
                 console.error('Error:', error);
-            });
+    });
 
     // Convert the access token to a JWT
-    const jwtToken = jwt.sign({ accessToken, email }, jwtSecret);
+    //const jwtToken = jwt.sign({ accessToken, email }, jwtSecret);
     //const jwtToken = jwt.sign({ accessToken }, jwtSecret);
-    checkIfUserExistsAndAdd(email);       
+    //checkIfUserExistsAndAdd(email);       
     // Send the JWT back to the client
-    console.log(jwtToken);
-    res.json({ jwtToken });
+    console.log(email);
+    res.json({ email });
 });
 
 module.exports = mainRouter;

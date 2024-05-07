@@ -3,7 +3,14 @@ const wordApi = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 
 //gets the word of the day 
 export async function getWordOfTheDay() {
-    const request = await fetch(`${baseUrl}/getWordsOfTheDay`);
+    let token = sessionStorage.getItem('accessToken');
+
+    const request = await fetch(`${baseUrl}/getWordsOfTheDay`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
 
     if(request.status == 401){
         //user is not logged in we redirect them to the login page
@@ -71,9 +78,8 @@ export async function generateJWT(token){
         return response.json();
     })
     .then(data => {
-        const jwtToken = data.jwtToken;
-        sessionStorage.setItem('jwtToken', jwtToken);
-        console.log('JWT Token:', jwtToken);
+        const email = data;
+        //sessionStorage.setItem('jwtToken', jwtToken);
     })
     .catch(error => {
         console.error('Error:', error);

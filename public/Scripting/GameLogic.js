@@ -3,7 +3,7 @@ import { getWordOfTheDay, checkWordExistence, postScore } from './Api.js';
 let word = await getWordOfTheDay();
 let targetWord = word.toLowerCase();
 console.log(targetWord);
-let score = 0;
+let guessCount = 0;
 
 
 const dictionary = [
@@ -100,7 +100,7 @@ function deleteKey(){
 }
 
 async function submitGuess(){
-    guessCount++;
+    guessCount += 1;
     let activeTiles = [...getActiveTiles()];
     if(activeTiles.length != MAX_WORD_LENGTH){
         showAlert("Word is not long enough!", 1000);
@@ -148,7 +148,7 @@ function checkWinState(guessedWord, array){
         showAlert("You won!");
         danceAnimation(array);
         endGame();
-        saveScore();
+        console.log("guess score is: " + guessCount);
         return
     }
 
@@ -156,7 +156,6 @@ function checkWinState(guessedWord, array){
     if (remainingTiles.length === 0) {
         showAlert("The word was " + targetWord.toUpperCase() , null);
         endGame();
-        saveScore(); //Do we even post a score ????? here ???? idk ????
     }
 
 

@@ -44,6 +44,8 @@ async function handleRedirect() {
     let hash = location.hash.substring(1); // Remove the '#' from the beginning
     let fragmentParams = new URLSearchParams(hash);
     let accessToken = fragmentParams.get('access_token');
+    sessionStorage.setItem('accessToken', accessToken);
+    
     console.log("temp: " + accessToken);
 
     if (accessToken) {
