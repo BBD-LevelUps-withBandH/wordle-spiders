@@ -9,9 +9,9 @@ require('dotenv').config({
   
 const client = new Client({
     user: "dbadmin",
-    host: process.env.HOST,
+    host: process.env.DB_URL,
     database: "wordle",
-    password: process.env.PASSWORD,
+    password: process.env.DB_PASSWORD,
     port: 5432,
     ssl: {
         require: true,
