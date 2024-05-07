@@ -1,0 +1,30 @@
+name: Release CD
+
+on:
+  workflow_call: 
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  security-events: write
+  id-token: write
+
+jobs:
+  frontend-deploy:
+    name: Frontend Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{secrets.AWS_ASSUME_ROLE}}
+        aws-region: "eu-west-1"
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+
+    - name: Upload new Frontend Files
+      run: |
+        aws s3 rm --recursive s3://978251882572-wordle
+        aws s3 cp ./frontend s3://978251882572-wordle --recursive

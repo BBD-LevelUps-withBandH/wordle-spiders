@@ -29,4 +29,9 @@ jobs:
     name: "Liquibase checks"
     secrets: inherit
     uses: ./.github/workflows/liquibase-ci.yaml
+
+  release-cd:
+    name: "Deploy Server, Frontend"
+    secrets: inherit
+    uses: ./.github/workflows/release-cd.yaml  
   
