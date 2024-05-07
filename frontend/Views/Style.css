@@ -1,21 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
-@container (min-width: 600px) {
-    body {
-        background-color: aqua;
-    }
-}
+
 
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: auto;
     background-color: #f0efeb;
     overflow: hidden;
-    flex-grow: 2;
-    height: 100%;
+    container-type: inline-size;
+    margin:0%;
+    height: 100dvh;
+  
 }
 
 
@@ -26,7 +23,7 @@ body {
     background-color: white;
     box-shadow: rgba(45, 35, 66, 0.4) 0 0.125em 0.25em, rgba(45, 35, 66, 0.3) 0 0.4375em 0.8125em -0.1875em, #D6D6E7 0 -0.1875em 0 inset;
     color: #36395A;
-    display: inline-flex;
+    display:flex;
     font-family: "inter";
     justify-content: center;
     overflow: hidden;
@@ -72,7 +69,9 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3vh;
+    gap: 2vh;
+    margin-top:30%;
+
 }
 
 .green {
@@ -89,58 +88,39 @@ body {
 
 .button,
 .home-button {
-    align-items: center;
-    appearance: none;
-    background-color: white;
-    border-radius: 0.5em;
-    box-shadow: rgba(45, 35, 66, 0.4) 0 2 4, rgba(45, 35, 66, 0.3) 0 7 13 -3, #D6D6E7 0 -3 0 inset;
-    box-sizing: border-box;
-    color: #36395A;
-    cursor: pointer;
-    display: inline-flex;
-    font-family: inter;
-    justify-content: center;
-    transition: box-shadow .15s, transform .15s;
-    touch-action: manipulation;
-    will-change: box-shadow, transform;
-    margin: 1% auto;
+  background-color: #ad977f74;
+  color: black;
+  border: none;
+  font-size: 1.5em;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 5%;
+  align-items: center;
+  justify-content: center;
+  padding: 1em 2em;
 }
-
-.button {
-  font-size: 2em;
-    padding: 1em;
-    height: auto;
-    width: auto;
-    font-weight: bold;
-}
-
-.home-button {
-    height: 2em;
-    width: 8em;
-}
-
-.close-button{
-  font-size: 1em;
-  background-color: white;
-   height: 2em;
-    width: 7em;
-}
-
-/* .button:focus {
-  box-shadow: #D6D6E7 0 0 0 1.5 inset, rgba(45, 35, 66, 0.4) 0 2 4, rgba(45, 35, 66, 0.3) 0 7 13 -3, #D6D6E7 0 -3 0 inset;
+.home-button{
+  margin:0%
 }
 
 .button:hover {
-  box-shadow: rgba(45, 35, 66, 0.4) 0 4 8, rgba(45, 35, 66, 0.3) 0 7 13 -3, #D6D6E7 0 -3 0 inset;
-  transform: translateY(-0.5em);
-} */
+  background-color: #ad977f;
+  transform: scale(1.05);
+}
+
+.close-button{
+  margin-top: 5em;
+   padding:0.5em;
+} 
+
 
 .button:active {
-    box-shadow: #D6D6E7 0 3px 7px inset;
+    box-shadow: #D6D6E7 0 3 7 inset;
     transform: translateY(0.5em);
 }
 
-img {
+.spirdle img {
     width: 100%;
     aspect-ratio: 1/1;
     object-fit: fill;
@@ -149,16 +129,18 @@ img {
 
 .spirdle {
     display: flex;
-    width: 40%;
-    height: 40%;
+    width: 50%;
     opacity: 20%;
     z-index: -2;
-
 }
 
 .right {
-    margin-left: auto;
-    margin-top: -35%;
+  margin-left: 100%;
+  margin-bottom: -40%;
+}
+#right-home{
+  margin-left: 100%;
+  margin-top: -50%;
 }
 
 .left {
@@ -169,7 +151,7 @@ img {
 #dialog {
     padding: 3em;
     max-width: 75%;
-    min-height: 40ch;
+    max-height: 60dvh;
     border: 0;
     box-shadow: 0 0 1em rgb(0 0 0 / .3);
     border-radius:2em;
@@ -182,7 +164,6 @@ img {
     align-items: center;
     justify-content: center;
     flex-direction: column; 
-    overflow: hidden;
     line-height: 1.5;
     
   
@@ -264,4 +245,29 @@ img {
       background-color: rgb(0 0 0 / 0%);
     }
   }
+
+  @container (max-width: 700px) {
+    .headingtile{
+      font-size: 1em;
+      padding-left: 0.5em;
+    padding-right: 0.5em;
+    }
+    .button,
+.home-button {
+  background-color: #ad977f74;
+  color: black;
+  border: none;
+  font-size: 1em;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 5%;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em 1em;
+}
+
+
+  }
+  
 
