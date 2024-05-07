@@ -1,4 +1,4 @@
-name: Release CD
+name: Release
 
 on:
   workflow_call: 
