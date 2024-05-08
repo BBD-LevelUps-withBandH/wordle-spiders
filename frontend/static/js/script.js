@@ -67,6 +67,7 @@ function checkLocalStorageForState(){
         state.page = localState.page;
         state.grid = localState.grid;
         state.datasetState = localState.datasetState;
+        updateSessionStorage();
     }
 }
 
@@ -121,6 +122,7 @@ function pressKey(key){
     nextTile.dataset.state = "active";
     state.grid.push(key.toLowerCase());
     state.datasetState.push('active');
+    updateSessionStorage();
 }
 
 function deleteKey(){
@@ -132,6 +134,7 @@ function deleteKey(){
     delete lastTile.dataset.letter;
     state.grid.pop();
     state.datasetState.pop();
+    updateSessionStorage();
 }
 
 async function submitGuess(){
@@ -231,6 +234,7 @@ function flipTiles(tile, index, array, guessedWord){
 
         if(index===0) state.datasetState[state.datasetState.length - 5] = tile.dataset.state;
         else state.datasetState[state.datasetState.length - (5-index)] = tile.dataset.state;
+        updateSessionStorage();
 
         if(index === array.length -1){
             tile.addEventListener("transitionend", () =>{
@@ -365,6 +369,7 @@ function setupButtonEventListener(btn, pageType = undefined, actionFunction = un
     btn.addEventListener('click', function() {
         if(pageType !== undefined){
             state.page = pageType;
+            updateSessionStorage();
         }
         if (actionFunction !== undefined) {
             actionFunction();
@@ -413,7 +418,6 @@ function buildGame(){
 }
 
 function makeBoard(container){
-    console.log('making board');
     for(let i = 0; i < 30; i++){
         let sec = document.createElement('span');
         sec.className = 'tile';
@@ -437,7 +441,6 @@ function switchScreens(){
 }
 
 function setupScreen(){
-    console.log(state);
     switch(state.page){
         case pageType.LOGIN:
         case pageType.MAIN:
@@ -451,14 +454,11 @@ function setupScreen(){
     }
 }
 
-window.addEventListener('beforeunload', function (event) {
+function updateSessionStorage(){
+    sessionStorage.clear();
     sessionStorage.setItem('state', JSON.stringify(state));
-    console.log(state);
-    console.log("herere");
-    event.preventDefault();
-});
+}
 
 
 checkLocalStorageForState();
-console.log(state);
 setupScreen();
