@@ -4,12 +4,14 @@ databaseChangeLog:
    - include:
       file: ./database/tableAlters.sql
    - include:
-      file: ./database/views.sql
-   - include:
-      file: ./database/functions.sql
-   - include:
       file: ./database/mockData/users.sql
    - include:
       file: ./database/mockData/words.sql
    - include:
       file: ./database/mockData/scores.sql
+   - include:
+      file: ./database/views.sql
+   - include:
+      file: ./database/functions.sql
+   - include:
+      file: ./database/procedures.sql
