@@ -1,4 +1,4 @@
-import { generateJWT } from './Api.js';
+import { addUser } from './Api.js';
 
 const loginButton = document.getElementById("auth");
 
@@ -15,7 +15,7 @@ function login() {
         form.setAttribute('action', oauthEndpoint);
     
         let params = {
-            'client_id': '', //google client id 
+            'client_id': '890978323670-1gn2pk7r9dfttucr7f6je4qu39sd9ckb.apps.googleusercontent.com', //google client id 
             'redirect_uri':'http://localhost:8080',
             'response_type':'token',
             'scope':'https://www.googleapis.com/auth/userinfo.profile',
@@ -49,7 +49,7 @@ async function handleRedirect() {
     console.log("temp: " + accessToken);
 
     if (accessToken) {
-        await generateJWT(accessToken);
+        await addUser(accessToken);
     }
 
     history.replaceState(null, null, window.location.href.split('#')[0]);
