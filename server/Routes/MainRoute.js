@@ -1,12 +1,14 @@
 var express = require("express")
 const path = require("path");
 const { join } = require("path");
+const { verifyToken, getEmailFromToken, verifyGoogleToken } = require("./Utility/auth");
 const mainRouter = express.Router();
 const {getHighScore, 
        getWordsOfTheDay,
        getRemainingUserScores,
        checkIfUserIDExists,
        checkIfWordIDExists,
+       checkIfUserExistsAndAdd,
        addScore} = require('../database.queries');
 
 const handle_errors = (fn) => (req, res, next) => {  
@@ -17,13 +19,19 @@ const handle_errors = (fn) => (req, res, next) => {
 
 mainRouter.get("/", function (req, res) {
     res.send("Health is good");
+    //res.sendFile(path.join(__dirname, '../../frontend/Views/main.html'));
 });
 
-mainRouter.get(
-    "/highScore/:user_id",
-    handle_errors(async (req, res) => {
-        let result = await getHighScore(req.params.user_id);
+// mainRouter.get("/game", function (req, res){
+//     res.sendFile(path.join(__dirname, '../../frontend/Views/game.html'));
+// })
 
+mainRouter.get(
+    "/highScore/:user_id", verifyGoogleToken,
+    handle_errors(async (req, res) => {
+        let email = req.email;
+        let result = await getHighScore(email); //req.params.user_id
+        
         if (result.includes("Invalid"))
             res.status(400).send("Invalid Query")
         else if (result.length == 0)
@@ -34,8 +42,9 @@ mainRouter.get(
 );
 
 mainRouter.get(
-    "/getWordsOfTheDay",
+    "/getWordsOfTheDay", verifyGoogleToken,
     handle_errors(async (req, res) => {
+        console.log("WE ARE HERE!");
         let result = await getWordsOfTheDay();
         
         if (result.length == 0)
@@ -46,14 +55,19 @@ mainRouter.get(
 );
 
 mainRouter.post(
-    "/postScore",
+    "/postScore", verifyGoogleToken,
     handle_errors(async (req, res) => {
+        let email = req.email;
         const data = req.body;
         console.log('New Score:', data)
 
-        let user_id = data.user_id;
+        let user_id = email; //req.headers.authorization
         let word_id = data.word_id;
         let guesses_taken = data.guesses_taken;
+
+        console.log(word_id);
+        console.log(guesses_taken);
+        console.log(user_id);
 
         let userIDCount = await checkIfUserIDExists(user_id);
         let wordIDCount = await checkIfWordIDExists(word_id);
@@ -77,5 +91,30 @@ mainRouter.post(
         }
     })
 );
+
+//rename this 
+mainRouter.get('/generateJWTToken', async(req, res) => {
+    console.log("WE HIT HERE");
+    const accessToken = req.headers.authorization.split(' ')[1]; 
+    console.log("access token is " + accessToken);
+    let email; 
+  
+    await fetch('https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + accessToken)
+            .then(response => response.json())
+            .then(async data => {
+                email = await data.email;
+                
+                console.log('Email:', email);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+    });
+
+  
+    checkIfUserExistsAndAdd(email);       
+    
+    console.log(email);
+    res.json({ email });
+});
 
 module.exports = mainRouter;
