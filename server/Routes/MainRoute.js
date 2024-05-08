@@ -6,8 +6,8 @@ const mainRouter = express.Router();
 const {getHighScore, 
        getWordsOfTheDay,
        getRemainingUserScores,
-       checkIfUserIDExists,
-       checkIfWordIDExists,
+       checkIfUserExists,
+       checkIfWordExists,
        checkIfUserExistsAndAdd,
        addScore} = require('../database.queries');
 
@@ -61,29 +61,28 @@ mainRouter.post(
         const data = req.body;
         console.log('New Score:', data)
 
-        let user_id = email; //req.headers.authorization
-        let word_id = data.word_id;
+        let word = data.word_id;
         let guesses_taken = data.guesses_taken;
 
-        console.log(word_id);
+        console.log(email);
         console.log(guesses_taken);
-        console.log(user_id);
+        console.log(word);
 
-        let userIDCount = await checkIfUserIDExists(user_id);
-        let wordIDCount = await checkIfWordIDExists(word_id);
+        let userCount = await checkIfUserExists(email);
+        let wordCount = await checkIfWordExists(word);
 
-        if (userIDCount[0].count == 0)
+        if (userCount[0].count == 0)
             res.status(400).send("User Does Not Exist")
-        else if (wordIDCount[0].count == 0)
+        else if (wordCount[0].count == 0)
             res.status(400).send("Word Does Not Exist")
         else {
-            let remainingUserScores = await getRemainingUserScores(user_id);
+            let remainingUserScores = await getRemainingUserScores(email);
 
             if (remainingUserScores[0].calc_max_remaining_scores <= 0)
                 res.status(400).send("More Scores Added Than Words Of Day")
             else {
-                let result = await addScore(word_id, user_id, guesses_taken)
-                if (result.includes("Invalid"))
+                let result = await addScore(email, word, guesses_taken)
+                if (result.includes("ERROR"))
                     res.status(400).send("Invalid Query")
                 else
                     res.send("Success")

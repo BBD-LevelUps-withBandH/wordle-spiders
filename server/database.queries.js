@@ -48,13 +48,13 @@ const getWordsOfTheDay = async() => {
     return await queryWrapper(query);
 };
 
-const getRemainingUserScores = async(user_id) => {
-    let query =`CALL calc_max_remaining_scores((select user_id from users u where u.user_email = '${user_id}'))`;
-    console.log(query, 'remaing user scores');
+const getRemainingUserScores = async(user_email) => {
+    let query =`SELECT * FROM calc_max_remaining_scores('${user_email}')`;
+    console.log(query, 'Remaining user scores');
     return await queryWrapper(query);
 };
 
-const checkIfUserIDExists = async(user_email) => {
+const checkIfUserExists = async(user_email) => {
     let query =`SELECT COUNT(*)
                 FROM users
                 WHERE user_email = '${user_email}'`;
@@ -89,16 +89,15 @@ const checkIfUserExistsAndAdd = async (user_id) => {
     // }
 };
 
-const checkIfWordIDExists = async(word_id) => {
+const checkIfWordExists = async(word) => {
     let query =`SELECT COUNT(*)
                 FROM words
-                WHERE word_id = '${word_id}'`;
+                WHERE word = '${word}'`;
     return await queryWrapper(query);
 };
 
-const addScore = async(word_id, user_id, guesses_taken) => {
-    let query =`INSERT INTO scores (guesses_taken, word, user_email) VALUES
-                (${guesses_taken}, ${word_id}, ${user_id});`;
+const addScore = async(user_email, word, guesses_taken) => {
+    let query = `CALL add_score('${user_email}', '${word}', ${guesses_taken});`;
     return await queryWrapper(query);
 };
 
@@ -106,8 +105,8 @@ module.exports = {
     getHighScore,
     getWordsOfTheDay,
     getRemainingUserScores,
-    checkIfUserIDExists,
-    checkIfWordIDExists,
+    checkIfUserExists,
+    checkIfWordExists,
     addScore,
     checkIfUserExistsAndAdd
 }
