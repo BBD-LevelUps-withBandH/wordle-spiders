@@ -21,7 +21,7 @@ const state = {
 
 let word;
 let targetWord;
-let guessCount;
+let guessCount = 0;
 
 
 const dictionary = [
@@ -202,6 +202,8 @@ function checkWinState(guessedWord, array){
         showAlert("You won!");
         danceAnimation(array);
         endGame();
+        sessionStorage.setItem('score', guessCount);
+        postScore(guessCount);
         console.log("guess score is: " + guessCount);
         return
     }
@@ -209,6 +211,8 @@ function checkWinState(guessedWord, array){
     const remainingTiles = gameGrid.querySelectorAll(":not([data-letter])")
     if (remainingTiles.length === 0) {
         showAlert("The word was " + targetWord.toUpperCase() , null);
+        sessionStorage.setItem('score', 7);
+        postScore(7);
         endGame();
     }
 }
@@ -288,9 +292,6 @@ function danceAnimation(tiles){
 
 }
 
-function saveScore(){
-    // postScore(score);
-}
 
 function showAlert(message, duration){
     const alert = document.createElement("span");
@@ -609,6 +610,29 @@ function updateSessionStorage(){
     sessionStorage.setItem('state', JSON.stringify(state));
 }
 
+async function getStats(){
+    let word = sessionStorage.getItem('word');
+    let score = sessionStorage.getItem('score');
+    let averageScore = await getAverageScore();
+
+    if(score == 7){
+        score = "You did not complete this spirdle!"
+    }
+
+    if(averageScore == 7){
+        averageScore = "No one has completed this spirdle!"
+    }
+
+    let statData = {
+        word,
+        score,
+        averageScore
+    }
+
+    return statData;
+}
 
 checkLocalStorageForState();
 setupScreen();
+
+

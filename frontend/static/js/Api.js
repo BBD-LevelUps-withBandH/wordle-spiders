@@ -1,6 +1,14 @@
 const baseUrl = "https://api.karle.co.za";
 const wordApi = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 
+
+function redirectToLogin(){
+    let state = JSON.parse(sessionStorage.getItem('state'));
+    state.page = 'LOGIN';
+    sessionStorage.setItem('state', state);
+    location.reload();
+}
+
 //gets the word of the day 
 export async function getWordOfTheDay() {
     let token = sessionStorage.getItem('accessToken');
@@ -14,9 +22,7 @@ export async function getWordOfTheDay() {
     });
 
     if(request.status == 401){
-        //user is not logged in we redirect them to the login page
-        console.log("user is unauthorized!");
-        return request.status;
+        redirectToLogin();
     }else{
         const data = await request.json();
         
@@ -53,8 +59,7 @@ export async function postScore(score){
         body: JSON.stringify(postData)
     }).then(response => {
         if (response.status === 401) {
-            //throw new Error('Unauthorized');
-            console.log("user is unauthorized!");
+            redirectToLogin();
         }
 
         if (!response.ok) {
@@ -114,9 +119,7 @@ export async function getUsersHighscore(){
         }
     });
     if(request.status == 401){
-        //user is not logged in we redirect them to the login page
-        console.log("user is unauthorized!");
-        return request.status;
+        redirectToLogin();
     }else{
         const score = await request.json();
         console.log("users highscore is: " + score);
@@ -124,7 +127,6 @@ export async function getUsersHighscore(){
     }
     
 }
-
 
 export async function getAverageScore() {
     let word = sessionStorage.getItem('word');
@@ -139,9 +141,7 @@ export async function getAverageScore() {
    
 
     if(request.status == 401){
-        //user is not logged in we redirect them to the login page
-        console.log("user is unauthorized!");
-        return request.status;
+        redirectToLogin();
     }else{
         const averageScore = await request.json();
         console.log("users highscore is: " + averageScore);
