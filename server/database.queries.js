@@ -62,17 +62,12 @@ const checkIfUserExists = async(user_email) => {
 };
 
 const checkIfUserExistsAndAdd = async (user_email) => {
-
-
     let query = `insert into users(user_email)
     select '${user_email}' where not exists 
     (select user_email from users u where u.user_email = '${user_email}')`
 
-    console.log(query);
-
     let result = await queryWrapper(query);
-    console.log(result);
-    
+    console.log(result); 
 };
 
 const checkIfWordExists = async(word) => {

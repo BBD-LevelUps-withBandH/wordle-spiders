@@ -1,9 +1,10 @@
-const baseUrl = "http://localhost:8080";
+const baseUrl = "https://api.karle.co.za";
 const wordApi = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 
 //gets the word of the day 
 export async function getWordOfTheDay() {
     let token = sessionStorage.getItem('accessToken');
+    console.log(token);
 
     const request = await fetch(`${baseUrl}/getWordsOfTheDay`, {
         method: 'GET',
@@ -19,12 +20,18 @@ export async function getWordOfTheDay() {
     }else{
         const data = await request.json();
         
-        
-        console.log("WORD ARE: " + data[0].word);
+        // let index = Math.floor(Math.random() * (max + 1));
+
+        let index = Math.floor(Math.random() * data.length);
+        console.log("Words", data);
+        console.log("Len", data.length);
+        console.log("Index", index)
+
+        console.log("WORD ARE: " + data[index].word);
     
-        sessionStorage.setItem("word", data[0].word);
-        sessionStorage.setItem("word_id", data[0].word_id);
-        return data[0].word;
+        sessionStorage.setItem("word", data[index].word);
+        sessionStorage.setItem("word_id", data[index].word_id);
+        return data[index].word;
     }
 }
 

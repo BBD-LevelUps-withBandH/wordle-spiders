@@ -15,10 +15,10 @@ function login() {
         form.setAttribute('action', oauthEndpoint);
     
         let params = {
-            'client_id': '', //google client id 
-            'redirect_uri':'http://localhost:8080',
+            'client_id': '890978323670-1gn2pk7r9dfttucr7f6je4qu39sd9ckb.apps.googleusercontent.com', //google client id 
+            'redirect_uri':'https://web.karle.co.za',
             'response_type':'token',
-            'scope':'https://www.googleapis.com/auth/userinfo.profile',
+            'scope':'https://www.googleapis.com/auth/userinfo.email',
             'include_granted_scopes': 'true',
             'state': 'pass-through-value'
         }
@@ -45,11 +45,15 @@ async function handleRedirect() {
     let fragmentParams = new URLSearchParams(hash);
     let accessToken = fragmentParams.get('access_token');
     sessionStorage.setItem('accessToken', accessToken);
+
+    console.log(sessionStorage.getItem('accessToken'));
     
     console.log("temp: " + accessToken);
 
     if (accessToken) {
         await addUser(accessToken);
+    } else {
+        return 401;
     }
 
     history.replaceState(null, null, window.location.href.split('#')[0]);
@@ -58,12 +62,10 @@ async function handleRedirect() {
 // Check for access token on page load
 window.addEventListener('load', handleRedirect);
 
-async function auth(){
+export async function auth(){
     await login();
 }
 
-loginButton.addEventListener("click", function (){
-    auth();
-});
-
-
+// loginButton.addEventListener("click", function (){
+//     auth();
+// });

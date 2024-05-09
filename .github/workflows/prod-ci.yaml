@@ -7,7 +7,7 @@ on:
 
 permissions:
   checks: write
-  contents: read
+  contents: write
   id-token: write
   security-events: write
 
@@ -30,3 +30,7 @@ jobs:
     secrets: inherit
     uses: ./.github/workflows/liquibase-ci.yaml
   
+  release-cd:
+    name: "Deploy Server, Frontend"
+    secrets: inherit
+    uses: ./.github/workflows/release-cd.yaml   

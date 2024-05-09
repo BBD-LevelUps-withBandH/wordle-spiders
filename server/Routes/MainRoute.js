@@ -1,7 +1,7 @@
 var express = require("express")
 const path = require("path");
 const { join } = require("path");
-const  verifyGoogleToken  = require("./Utility/auth");
+const  verifyGoogleToken  = require("./Utility/auth.js");
 const mainRouter = express.Router();
 const {getHighScore, 
        getWordsOfTheDay,
@@ -19,17 +19,17 @@ const handle_errors = (fn) => (req, res, next) => {
 };
 
 mainRouter.get("/", function (req, res) {
-    //res.send("Health is good");
-    res.sendFile(path.join(__dirname, '../../frontend/Views/main.html'));
+    res.send("Health is good");
+    // res.sendFile(path.join(__dirname, '../../frontend/Views/main.html'));
 });
 
-mainRouter.get("/game", function (req, res){
-    res.sendFile(path.join(__dirname, '../../frontend/Views/game.html'));
-})
+// mainRouter.get("/game", function (req, res){
+//     res.sendFile(path.join(__dirname, '../../frontend/Views/game.html'));
+// })
 
-mainRouter.get("/stats", function (req, res){
-    res.sendFile(path.join(__dirname, '../../frontend/Views/stats.html'));
-})
+// mainRouter.get("/stats", function (req, res){
+//     res.sendFile(path.join(__dirname, '../../frontend/Views/stats.html'));
+// })
 
 mainRouter.get(
     "/highScore/:user_id", verifyGoogleToken,
@@ -112,11 +112,10 @@ mainRouter.post('/addUser', async(req, res) => {
             .catch(error => {
                 console.error('Error:', error);
     });
-
   
     checkIfUserExistsAndAdd(email);       
     
-    console.log(email);
+    console.log("User Added");
     res.json({ email });
 });
 
