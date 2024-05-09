@@ -1,9 +1,10 @@
-const baseUrl = "http://localhost:5000";
+const baseUrl = "https://api.karle.co.za";
 const wordApi = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 
 //gets the word of the day 
 export async function getWordOfTheDay() {
     let token = sessionStorage.getItem('accessToken');
+    console.log(token);
 
     const request = await fetch(`${baseUrl}/getWordsOfTheDay`, {
         method: 'GET',
@@ -15,28 +16,47 @@ export async function getWordOfTheDay() {
     if(request.status == 401){
         //user is not logged in we redirect them to the login page
         console.log("user is unauthorized!");
+        return request.status;
     }else{
         const data = await request.json();
-        sessionStorage.setItem("word", data);
-        console.log(data.word);
-        return data[0].word;
+        
+        // let index = Math.floor(Math.random() * (max + 1));
+
+        let index = Math.floor(Math.random() * data.length);
+        console.log("Words", data);
+        console.log("Len", data.length);
+        console.log("Index", index)
+
+        console.log("WORD ARE: " + data[index].word);
+    
+        sessionStorage.setItem("word", data[index].word);
+        sessionStorage.setItem("word_id", data[index].word_id);
+        return data[index].word;
     }
 }
 
 export async function postScore(score){
+    let token = sessionStorage.getItem('accessToken');
+    let word = sessionStorage.getItem('word');
+
     const postData = {
-        jwt: sessionStorage.getItem('jwtToken'),
-        word_id: sessionStorage.getItem('word'),
+        word: word,
         guesses_taken: score
     };
 
     fetch(`${baseUrl}/postScore`, {
         method: 'POST',
         headers: {
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(postData)
     }).then(response => {
+        if (response.status === 401) {
+            //throw new Error('Unauthorized');
+            console.log("user is unauthorized!");
+        }
+
         if (!response.ok) {
             throw new Error('Failed to save score');
         }
@@ -63,10 +83,10 @@ export async function checkWordExistence(word) {
     return status;
 }
 
-export async function generateJWT(token){
+export async function addUser(token){
 
-    fetch("http://localhost:5000/generateJWTToken", {
-        method: 'GET',
+    fetch(`${baseUrl}/addUser`, {
+        method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -79,7 +99,6 @@ export async function generateJWT(token){
     })
     .then(data => {
         const email = data;
-        //sessionStorage.setItem('jwtToken', jwtToken);
     })
     .catch(error => {
         console.error('Error:', error);
@@ -87,8 +106,46 @@ export async function generateJWT(token){
 }
 
 export async function getUsersHighscore(){
-    const request = await fetch(`${baseUrl}/highScore/:user_id`);
-    const score = await request.json();
-    console.log("users highscore is: " + score);
-    return score;
+    let token = sessionStorage.getItem('accessToken');
+    const request = await fetch(`${baseUrl}/highScore/:user_id`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    if(request.status == 401){
+        //user is not logged in we redirect them to the login page
+        console.log("user is unauthorized!");
+        return request.status;
+    }else{
+        const score = await request.json();
+        console.log("users highscore is: " + score);
+        return score;
+    }
+    
+}
+
+
+export async function getAverageScore() {
+    let word = sessionStorage.getItem('word');
+    let token = sessionStorage.getItem('accessToken');
+
+    const request = await fetch(`${baseUrl}/getAverageScore?word=${word}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+   
+
+    if(request.status == 401){
+        //user is not logged in we redirect them to the login page
+        console.log("user is unauthorized!");
+        return request.status;
+    }else{
+        const averageScore = await request.json();
+        console.log("users highscore is: " + averageScore);
+        return averageScore;
+    }
+    
 }

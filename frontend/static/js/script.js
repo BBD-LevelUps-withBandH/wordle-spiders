@@ -1,4 +1,5 @@
 import { getWordOfTheDay, checkWordExistence } from "../js/Api.js";
+import { auth } from "./Login.js";
 
 
 const pageType = {
@@ -18,11 +19,9 @@ const state = {
 
 
 
-let word = 'abate';
-// let word = await getWordOfTheDay();
-let targetWord = word.toLowerCase();
-console.log(targetWord);
-let guessCount = 0;
+let word;
+let targetWord;
+let guessCount;
 
 
 const dictionary = [
@@ -61,7 +60,11 @@ export function startGame(){
     document.addEventListener("keydown", keyPressHandler);
 }
 
-function checkWord(){
+async function checkWord(){
+    word = await getWordOfTheDay();
+    targetWord = word.toLowerCase();
+    console.log(targetWord);
+    guessCount = 0;
     if(word === 401){
         showAlert("Something went wrong!");
         endGame();
@@ -165,21 +168,21 @@ async function submitGuess(){
 
     }, "")
 
-    if(!dictionary.includes(guessedWord)){
-        showAlert("Not a word!", 1000);
-        shakeAnimation(activeTiles);
-        return
-    }
-
-    // let checkWord = await checkWordExistence(guessedWord.toLowerCase());
-    // console.log(checkWord);
-
-    // if(checkWord === 404){
-    //     console.log("WORD does not exists!");
+    // if(!dictionary.includes(guessedWord)){
     //     showAlert("Not a word!", 1000);
     //     shakeAnimation(activeTiles);
-    //     return;
+    //     return
     // }
+
+    let checkWord = await checkWordExistence(guessedWord.toLowerCase());
+    console.log(checkWord);
+
+    if(checkWord === 404){
+        console.log("WORD does not exists!");
+        showAlert("Not a word!", 1000);
+        shakeAnimation(activeTiles);
+        return;
+    }
 
 
     endGame();
@@ -380,8 +383,13 @@ function drawHeading(){
         loginButton.id = 'login';
         loginButton.innerText = 'Login';
         title.appendChild(loginButton);
-        setupButtonEventListener(loginButton, pageType.MAIN, switchScreens);
+        setupButtonEventListener(loginButton, pageType.MAIN, doAuth);
     }
+}
+
+async function doAuth(){
+    let result = await auth();
+    if(result !== 401) switchScreens();
 }
 
 function makeWordContainer(container, words){
@@ -583,7 +591,7 @@ function setupScreen(){
 }
 
 function updateSessionStorage(){
-    sessionStorage.clear();
+    // sessionStorage.clear();
     sessionStorage.setItem('state', JSON.stringify(state));
 }
 

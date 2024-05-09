@@ -1,34 +1,36 @@
-// const express = require("express");
-// const bodyParser = require("body-parser");
-// const http = require('http');
-
-// const mainRouter = require("./Routes/MainRoute");
-
-// const path = require("path");
-// const app = express();
-// const port = 5000;
-
-// app.use(bodyParser.json({ limit: "100mb" }));
-// app.use(bodyParser.urlencoded({ extended: true }));
-
-// app.use("/", mainRouter);
-
-// let server = http.createServer(app);
-
-// server.listen(port, () => {
-//   console.log(`Server running at http://${"127.0.0.1"}:${port}/`);
-// });
-
-
 const express = require("express");
+const bodyParser = require("body-parser");
+const http = require('http');
+const cors = require('cors');
+
+
+const mainRouter = require("./Routes/MainRoute");
+
 const path = require("path");
-
 const app = express();
+const port = 8080;
 
-app.use("/static", express.static(path.resolve(__dirname, "../frontend", "static")));
-
-app.get("/*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../frontend", "main.html"));
+require('dotenv').config({
+  path: path.join(__dirname, 'db.env')
 });
 
-app.listen(process.env.PORT || 3000, () => console.log("Server running..."));
+// app.use(express.static(path.join(__dirname, 'frontend')));
+
+app.use(bodyParser.json({ limit: "100mb" }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
+
+
+app.use("/", mainRouter);
+
+// app.use(express.static(path.join(__dirname, '../frontend/Scripting/')));
+// app.use(express.static(path.join(__dirname, '../frontend/Styling/')));
+// app.use(express.static(path.join(__dirname, '../frontend/Views/')));
+
+
+
+let server = http.createServer(app);
+
+server.listen(port, () => {
+  console.log(`Server running at http://${"127.0.0.1"}:${port}/`);
+});
