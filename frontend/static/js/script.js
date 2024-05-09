@@ -508,7 +508,7 @@ function buildGame(){
         badSpider.classList.add('game');
     })
 
-    document.body.style.backgroundImage = "url('../../img/game_background.png')";
+    document.body.style.backgroundImage = "url('../../img/game_background_repeat.png')";
 
     const title = document.querySelector('.title');
     title.classList.add('game');
