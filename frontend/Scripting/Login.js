@@ -1,4 +1,4 @@
-import { generateJWT } from './Api.js';
+import { addUser } from './Api.js';
 
 const loginButton = document.getElementById("auth");
 
@@ -49,7 +49,7 @@ async function handleRedirect() {
     console.log("temp: " + accessToken);
 
     if (accessToken) {
-        await generateJWT(accessToken);
+        await addUser(accessToken);
     }
 
     history.replaceState(null, null, window.location.href.split('#')[0]);

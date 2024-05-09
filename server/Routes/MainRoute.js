@@ -1,7 +1,7 @@
 var express = require("express")
 const path = require("path");
 const { join } = require("path");
-const { verifyToken, getEmailFromToken, verifyGoogleToken } = require("./Utility/auth");
+const  verifyGoogleToken  = require("./Utility/auth");
 const mainRouter = express.Router();
 const {getHighScore, 
        getWordsOfTheDay,
@@ -9,6 +9,7 @@ const {getHighScore,
        checkIfUserExists,
        checkIfWordExists,
        checkIfUserExistsAndAdd,
+       getAverageScore,
        addScore} = require('../database.queries');
 
 const handle_errors = (fn) => (req, res, next) => {  
@@ -18,13 +19,17 @@ const handle_errors = (fn) => (req, res, next) => {
 };
 
 mainRouter.get("/", function (req, res) {
-    res.send("Health is good");
-    //res.sendFile(path.join(__dirname, '../../frontend/Views/main.html'));
+    //res.send("Health is good");
+    res.sendFile(path.join(__dirname, '../../frontend/Views/main.html'));
 });
 
-// mainRouter.get("/game", function (req, res){
-//     res.sendFile(path.join(__dirname, '../../frontend/Views/game.html'));
-// })
+mainRouter.get("/game", function (req, res){
+    res.sendFile(path.join(__dirname, '../../frontend/Views/game.html'));
+})
+
+mainRouter.get("/stats", function (req, res){
+    res.sendFile(path.join(__dirname, '../../frontend/Views/stats.html'));
+})
 
 mainRouter.get(
     "/highScore/:user_id", verifyGoogleToken,
@@ -61,7 +66,7 @@ mainRouter.post(
         const data = req.body;
         console.log('New Score:', data)
 
-        let word = data.word_id;
+        let word = data.word;
         let guesses_taken = data.guesses_taken;
 
         console.log(email);
@@ -92,7 +97,7 @@ mainRouter.post(
 );
 
 //rename this 
-mainRouter.get('/generateJWTToken', async(req, res) => {
+mainRouter.post('/addUser', async(req, res) => {
     console.log("WE HIT HERE");
     const accessToken = req.headers.authorization.split(' ')[1]; 
     console.log("access token is " + accessToken);
@@ -102,7 +107,6 @@ mainRouter.get('/generateJWTToken', async(req, res) => {
             .then(response => response.json())
             .then(async data => {
                 email = await data.email;
-                
                 console.log('Email:', email);
             })
             .catch(error => {
@@ -114,6 +118,21 @@ mainRouter.get('/generateJWTToken', async(req, res) => {
     
     console.log(email);
     res.json({ email });
+});
+
+mainRouter.get('/getAverageScore', verifyGoogleToken, async (req, res) => {
+    let word = req.query.word;
+    console.log("word is: " + word);
+    let result = await getAverageScore(word);
+
+    if (result === "Invalid") {
+        res.status(400).send("Invalid Query");
+    } else if (result === 0) {
+        res.status(404).send("No scores for word");
+    } else {
+        console.log(result[0].avg_score);
+        res.json(result[0].avg_score);
+    }
 });
 
 module.exports = mainRouter;

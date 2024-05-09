@@ -61,32 +61,18 @@ const checkIfUserExists = async(user_email) => {
     return await queryWrapper(query);
 };
 
-const checkIfUserExistsAndAdd = async (user_id) => {
+const checkIfUserExistsAndAdd = async (user_email) => {
 
 
     let query = `insert into users(user_email)
-    select '${user_id}' where not exists 
-    (select user_email from users u where u.user_email = '${user_id}')`
+    select '${user_email}' where not exists 
+    (select user_email from users u where u.user_email = '${user_email}')`
 
     console.log(query);
 
     let result = await queryWrapper(query);
     console.log(result);
     
-    
-    // Check if the user exists
-    //console.log("we are trying to add user in db!");
-   // let query = `SELECT COUNT(*) AS count FROM users WHERE user_id = ${user_id}`;
-    //let result = await queryWrapper(query);
-
-    //console.log("the result it: " + result);
-
-    // If the user does not exist, add them
-    // if (result[0].count === 0) {
-    //     query = `INSERT INTO users (user_id) VALUES (${user_id})`;
-    //     await queryWrapper(query);
-    //     con
-    // }
 };
 
 const checkIfWordExists = async(word) => {
@@ -101,6 +87,13 @@ const addScore = async(user_email, word, guesses_taken) => {
     return await queryWrapper(query);
 };
 
+const getAverageScore = async(word) =>{
+    const wordOfTheDay = word;
+    const query = `SELECT public.get_average_score_for_word('${wordOfTheDay}') AS avg_score`;
+    return await queryWrapper(query);
+
+}
+
 module.exports = {
     getHighScore,
     getWordsOfTheDay,
@@ -108,5 +101,6 @@ module.exports = {
     checkIfUserExists,
     checkIfWordExists,
     addScore,
-    checkIfUserExistsAndAdd
+    checkIfUserExistsAndAdd,
+    getAverageScore
 }

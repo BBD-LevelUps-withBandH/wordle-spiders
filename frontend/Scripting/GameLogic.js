@@ -6,6 +6,7 @@ let targetWord = word.toLowerCase();
 console.log(targetWord);
 let guessCount = 0;
 
+
 const gameGrid = document.querySelector("[data-grid]");
 const alertContainer = document.querySelector("[data-alert-container]");
 const keyboard = document.querySelector("[data-keyboard]");
@@ -29,9 +30,11 @@ function endGame(){
     document.removeEventListener("keydown", keyPressHandler);
 }
 
+//checks to see if there is any error while getting the word 
 function checkWord(){
     if(word === 401){
         showAlert("Something went wrong!");
+        //should take you back to play/ how to play screen
         endGame();
     }else{
         startGame();
@@ -144,6 +147,7 @@ function checkWinState(guessedWord, array){
         danceAnimation(array);
         endGame();
         console.log("guess score is: " + guessCount);
+        sessionStorage.setItem('score', guessCount);
         postScore(guessCount);
         return
     }
@@ -152,6 +156,7 @@ function checkWinState(guessedWord, array){
     if (remainingTiles.length === 0) {
         showAlert("The word was " + targetWord.toUpperCase() , null);
         endGame();
+        sessionStorage.setItem('score', guessCount);
         postScore(guessCount);
     }
 
