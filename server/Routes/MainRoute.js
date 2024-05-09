@@ -87,7 +87,9 @@ mainRouter.post(
                 res.status(400).send("More Scores Added Than Words Of Day")
             else {
                 let result = await addScore(email, word, guesses_taken)
-                if (result.includes("ERROR"))
+                if (result.includes("not-null"))
+                    res.send("Success")
+                else if (result.includes("ERROR"))
                     res.status(400).send("Invalid Query")
                 else
                     res.send("Success")
