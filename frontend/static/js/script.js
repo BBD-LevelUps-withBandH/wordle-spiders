@@ -599,3 +599,26 @@ function updateSessionStorage(){
 
 checkLocalStorageForState();
 setupScreen();
+
+
+async function getStats(){
+    let word = sessionStorage.getItem('word');
+    let score = sessionStorage.getItem('score');
+    let averageScore = await getAverageScore();
+
+    if(score == 7){
+        score = "You did not complete this spirdle!"
+    }
+
+    if(averageScore == 7){
+        averageScore = "No one has completed this spirdle!"
+    }
+
+    let statData = {
+        word,
+        score,
+        averageScore
+    }
+
+    return statData;
+}
