@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:8080";
+const baseUrl = "https://api.karle.co.za";
 const wordApi = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 
 //gets the word of the day 
