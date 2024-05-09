@@ -331,6 +331,7 @@ h1 {
   /* color: white; */
   color: #36395A;
   border: 0.1em solid hsl(240, 2%, 32%);
+  background-color: #f0efeb;
   text-transform: uppercase;
   font-weight: bold;
   display: flex;
