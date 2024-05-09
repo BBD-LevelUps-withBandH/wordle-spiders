@@ -319,7 +319,7 @@ function showAlert(message, duration){
 
 
 function drawHeading(){
-    const title = document.getElementById('title');
+    const title = document.querySelector('.title');
 
     const welcome = document.createElement('section');
     welcome.className = 'home';
@@ -345,7 +345,7 @@ function drawHeading(){
     title.appendChild(to);
 
     const spirdle = document.createElement('section');
-    spirdle.className = 'home';
+    spirdle.className = 'home bottom';
     words = [
         {letter: "S", color: 'green'},
         {letter: "P", color: 'yellow'},
@@ -360,7 +360,7 @@ function drawHeading(){
 
     if(state.page === pageType.MAIN){
         let playButton = document.createElement('button');
-        playButton.className = "home-button button show";
+        playButton.className = "show button green";
         playButton.innerText = 'How to Play';
         title.appendChild(playButton);
         const modal = document.createElement('dialog');
@@ -368,19 +368,18 @@ function drawHeading(){
         modal.id = "dialog"
         buildModal(modal);
         title.appendChild(modal);
-        setupButtonEventListener(playButton, undefined, setupEventListenersForDialog);
+        setupEventListenersForDialog();
+        setupButtonEventListener(playButton);
 
         playButton = document.createElement('button');
-        playButton.className = "home-button button";
+        playButton.className = "button red";
         playButton.innerText = 'Play';
         title.appendChild(playButton);
         setupButtonEventListener(playButton, pageType.GAME, switchScreens);
 
     } else { //assume pageType is LOGIN
         const loginButton = document.createElement('button');
-        loginButton.className = "button";
-        loginButton.role = 'button';
-        loginButton.id = 'login';
+        loginButton.className = "button red";
         loginButton.innerText = 'Login';
         title.appendChild(loginButton);
         setupButtonEventListener(loginButton, pageType.MAIN, doAuth);
@@ -388,8 +387,9 @@ function drawHeading(){
 }
 
 async function doAuth(){
-    let result = await auth();
-    if(result !== 401) switchScreens();
+    state.page = pageType.MAIN;
+    updateSessionStorage();
+    await auth();
 }
 
 function makeWordContainer(container, words){
@@ -461,10 +461,15 @@ function buildModal(container){
     paragraph.innerText = "Ready to delve into the world of Spirdle? Let the adventure begin, and may the words lead you to triumph!";
     container.appendChild(paragraph);
 
+
+    let sec = document.createElement('section');
+    sec.className = "sticky";
+
     const btn = document.createElement('button');
-    btn.className = "close close-button button";
+    btn.className = "close button-dialog red";
     btn.innerText = "All done";
-    container.appendChild(btn);
+    sec.appendChild(btn);
+    container.appendChild(sec);
 }
 
 function makeModalContainer(container, words){
@@ -497,7 +502,16 @@ function clearElementInternals(element){
 }
 
 function buildGame(){
-    const title = document.querySelector('#title');
+
+    let badSpiders = document.querySelectorAll('.spirdle');
+    badSpiders.forEach(badSpider => {
+        badSpider.classList.add('game');
+    })
+
+    document.body.style.backgroundImage = "url('../../img/game_background.png')";
+
+    const title = document.querySelector('.title');
+    title.classList.add('game');
     const alertContainer = document.createElement('section');
     alertContainer.className = "alert-container";
     alertContainer.dataset.alertContainer = '';
@@ -536,7 +550,7 @@ function makeBoard(container){
 }
 
 function makeKeyboard(container){
-    const lettersArray = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '', 'enter', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'backspace'];
+    const lettersArray = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '', 'backspace', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'enter'];
 
     lettersArray.forEach(letter => {
         let element;
@@ -555,7 +569,7 @@ function makeKeyboard(container){
                 element = document.createElement('button');
                 element.className = "Key large material-symbols-outlined";
                 element.setAttribute('keyboard-Delete', '');
-                element.innerText = "←";
+                element.innerText = "DEL";
                 break;
             default:
                 element = document.createElement('button');
@@ -571,7 +585,7 @@ function makeKeyboard(container){
 
 
 function switchScreens(){
-    const title = document.getElementById('title');
+    const title = document.querySelector('.title');
     clearElementInternals(title);
     setupScreen();
 }
