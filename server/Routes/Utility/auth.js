@@ -1,9 +1,6 @@
-
-
 async function verifyGoogleToken(req, res, next) {
     // Get the JWT token from the request headers
     const accessToken = req.headers.authorization.split(' ')[1];
-    console.log(accessToken);
     
     if (!accessToken) {
         console.log("no token!");
@@ -16,7 +13,7 @@ async function verifyGoogleToken(req, res, next) {
       const data = await response.json();
       let email = await data.email;
   
-      if (response.ok && data.audience === process.env.JWT_SECRET_KEY) {
+      if (response.ok && data.audience === process.env.CLIENT_ID) {
         // Token is valid
         req.decodedToken = data;
         console.log("authorized!");
