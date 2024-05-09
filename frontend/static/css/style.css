@@ -147,12 +147,12 @@ img {
 
 }
 
-.right {
+.spirdle.right {
     margin-left: auto;
     margin-top: -30%;
 }
 
-.left {
+.spirdle.left {
     margin-right: 90%;
     margin-top: -20%;
 }
@@ -283,6 +283,56 @@ img {
       padding: 1em;
       font-size: clamp(.5rem, 2.5vmin, 1.5rem);
   }
+
+  .Keyboard{
+    display: grid;
+    grid-template-columns: repeat(20, minmax(auto, 1.25em));
+    grid-auto-rows: 3em;
+    gap: .25em;
+    justify-content: center;
+}
+
+.Key{
+    font-size: inherit;
+    grid-column: span 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: hsl(
+        var(--hue, 200), 
+        var(--saturation, 1%), 
+        calc(var(--lightness-offset, 0%) + var(--lightness, 51%)) 
+    );
+    color: white;
+    text-transform: uppercase;
+    border-radius: .50em;
+    user-select: none;
+}
+
+.Key.large{
+    grid-column: span 3;
+
+}
+
+.Key.wrong{
+    --lightness: 23%
+}
+
+.Key.wrong-location{
+    --hue: 49;
+    --saturation: 51%;
+    --lightness: 47%;
+}
+
+.Key.right{
+    --hue: 115;
+    --saturation: 29%;
+    --lightness: 43%;
+}
+
+.Key:hover, .Key:focus{
+    --lightness-offset: 10%
+}
   
   .grid{
       display: grid;
@@ -292,7 +342,6 @@ img {
       grid-template-columns: repeat(5, 4em);
       grid-template-rows: repeat(6, 4em);
       gap: .25em;
-      margin-bottom: 1em;
   }
   
   .tile{

@@ -1,4 +1,4 @@
-
+import { getWordOfTheDay, checkWordExistence } from "../js/Api.js";
 
 
 const pageType = {
@@ -8,15 +8,18 @@ const pageType = {
     STATS: 'stats'
 };
 
+
 const state = {
     page: pageType.LOGIN,
     grid: new Array(),
-    datasetState: new Array()
+    datasetState: new Array(),
+    keyboard: new Array()
 };
 
 
 
 let word = 'abate';
+// let word = await getWordOfTheDay();
 let targetWord = word.toLowerCase();
 console.log(targetWord);
 let guessCount = 0;
@@ -58,6 +61,15 @@ export function startGame(){
     document.addEventListener("keydown", keyPressHandler);
 }
 
+function checkWord(){
+    if(word === 401){
+        showAlert("Something went wrong!");
+        endGame();
+    }else{
+        startGame();
+    }
+}
+
 
 
 function checkLocalStorageForState(){
@@ -67,6 +79,7 @@ function checkLocalStorageForState(){
         state.page = localState.page;
         state.grid = localState.grid;
         state.datasetState = localState.datasetState;
+        state.keyboard = localState.keyboard;
         updateSessionStorage();
     }
 }
@@ -195,8 +208,6 @@ function checkWinState(guessedWord, array){
         showAlert("The word was " + targetWord.toUpperCase() , null);
         endGame();
     }
-
-
 }
 
 //Animations\\
@@ -209,9 +220,17 @@ function shakeAnimation(tiles){
     });
 }
 
+function setKeyboardFromState(){
+    keyboard = document.querySelector("[data-keyboard]");
+    state.keyboard.forEach(key => {
+        const onScreenKey = keyboard.querySelector(`[keyboard-key="${key.letter}"i]`);
+        onScreenKey.classList.add(key.state);
+    })
+}
+
 function flipTiles(tile, index, array, guessedWord){
     let letter = tile.dataset.letter;
-    // const key = keyboard.querySelector(`[keyboard-key="${letter}"i]`)
+    const key = keyboard.querySelector(`[keyboard-key="${letter}"i]`)
 
     setTimeout(() =>{
         tile.classList.add("flip");
@@ -222,15 +241,19 @@ function flipTiles(tile, index, array, guessedWord){
 
         if(targetWord[index] == letter){ //letter is in the correct location 
             tile.dataset.state = "right"
-            
-
+            key.classList.add("right");
+            state.keyboard.push({letter:letter, state:"right"});
         }else if(targetWord.includes(letter)){
             tile.dataset.state = "wrong-location"
-            // key.classList.add("wrong-location");
+            key.classList.add("wrong-location");
+            state.keyboard.push({letter:letter, state:"wrong-location"});
         }else{
             tile.dataset.state = "wrong"
-            // key.classList.add("wrong");
+            key.classList.add("wrong");
+            state.keyboard.push({letter:letter, state:"wrong"});
         }
+
+        console.log(state);
 
         if(index===0) state.datasetState[state.datasetState.length - 5] = tile.dataset.state;
         else state.datasetState[state.datasetState.length - (5-index)] = tile.dataset.state;
@@ -337,6 +360,11 @@ function drawHeading(){
         playButton.className = "home-button button show";
         playButton.innerText = 'How to Play';
         title.appendChild(playButton);
+        const modal = document.createElement('dialog');
+        modal.className = "modal";
+        modal.id = "dialog"
+        buildModal(modal);
+        title.appendChild(modal);
         setupButtonEventListener(playButton, undefined, setupEventListenersForDialog);
 
         playButton = document.createElement('button');
@@ -377,8 +405,67 @@ function setupButtonEventListener(btn, pageType = undefined, actionFunction = un
     });
 }
 
-function buildModal(){
+function buildModal(container){
+    const order = document.createElement('section');
+    order.className = "order";
 
+    const how = document.createElement('section');
+    how.className = "How";
+    let words = [
+        {letter: "H", color: 'green'},
+        {letter: "O", color: 'red'},
+        {letter: "W", color: 'yellow'}
+    ];
+    makeModalContainer(how, words);
+    order.appendChild(how);
+
+    const to = document.createElement('section');
+    to.className = "To";
+    words = [
+        {letter: "T", color: 'green'},
+        {letter: "O", color: 'red'}
+    ];
+    makeModalContainer(to, words);
+    order.appendChild(to);
+
+    const play = document.createElement('section');
+    play.className = "play";
+    words = [
+        {letter: "P", color: 'yellow'},
+        {letter: "L", color: 'green'},
+        {letter: "A", color: 'red'},
+        {letter: "Y", color: 'yellow'}
+    ];
+    makeModalContainer(play, words);
+    order.appendChild(play);
+    container.appendChild(order);
+
+    let paragraph = document.createElement('p');
+    paragraph.innerText = "Welcome to Spirdle, where words weave tales of mystery and discovery. Imagine yourself embarking on an adventure, seeking to uncover a hidden secret—a five-letter word waiting to be revealed.";
+    container.appendChild(paragraph);
+    paragraph = document.createElement('p');
+    paragraph.innerText = "With each guess, you step closer to unraveling the puzzle. Pay attention to the clues provided—green letters show correct letters in the right place, while yellow hints at correct letters in the wrong spot. And if a letter doesn't belong, it appears gray.";
+    container.appendChild(paragraph);
+    paragraph = document.createElement('p');
+    paragraph.innerText = "Piece by piece, refine your guesses, letting intuition guide you through the labyrinth of possibilities. Victory comes when the word is finally unveiled. But even if the mystery remains unsolved after six tries, remember, every attempt is a step towards understanding.";
+    container.appendChild(paragraph);
+    paragraph = document.createElement('p');
+    paragraph.innerText = "Ready to delve into the world of Spirdle? Let the adventure begin, and may the words lead you to triumph!";
+    container.appendChild(paragraph);
+
+    const btn = document.createElement('button');
+    btn.className = "close close-button button";
+    btn.innerText = "All done";
+    container.appendChild(btn);
+}
+
+function makeModalContainer(container, words){
+    words.forEach(element => {
+        let sec = document.createElement('section');
+        sec.className = `htptile htp ${element.color}`;
+        sec.innerText = element.letter;
+        container.appendChild(sec);
+    });
 }
 
 function setupEventListenersForDialog(){
@@ -414,12 +501,19 @@ function buildGame(){
     makeBoard(grid);
     title.appendChild(grid);
 
-    startGame();
+    const keyboardContainer = document.createElement('section');
+    keyboardContainer.dataset.keyboard = "";
+    keyboardContainer.className = 'Keyboard';
+    makeKeyboard(keyboardContainer);
+    title.appendChild(keyboardContainer);
+    setKeyboardFromState();
+
+    checkWord();
 }
 
 function makeBoard(container){
     for(let i = 0; i < 30; i++){
-        let sec = document.createElement('span');
+        let sec = document.createElement('section');
         sec.className = 'tile';
         if(i===0) sec.dataset.stateWrong = '';
 
@@ -431,7 +525,41 @@ function makeBoard(container){
 
         container.appendChild(sec);
     }
-  }
+}
+
+function makeKeyboard(container){
+    const lettersArray = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '', 'enter', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'backspace'];
+
+    lettersArray.forEach(letter => {
+        let element;
+        switch (letter) {
+            case '':
+                element = document.createElement('section');
+                element.className = 'space';
+                break;
+            case 'enter':
+                element = document.createElement('button');
+                element.setAttribute('keyboard-Enter', '');
+                element.className = "Key large";
+                element.innerText = "Enter";
+                break;
+            case 'backspace':
+                element = document.createElement('button');
+                element.className = "Key large material-symbols-outlined";
+                element.setAttribute('keyboard-Delete', '');
+                element.innerText = "←";
+                break;
+            default:
+                element = document.createElement('button');
+                element.className = "Key";
+                element.setAttribute('keyboard-key', letter);
+                element.innerText = letter;
+                break;
+        }
+        container.appendChild(element)
+    })
+
+}
 
 
 function switchScreens(){
