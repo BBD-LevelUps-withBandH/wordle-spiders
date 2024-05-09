@@ -1,0 +1,364 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0efeb;
+    overflow: hidden;
+    container-type: size;
+    margin:0%;
+    height: 100dvh;
+  
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2vh;
+  margin-top: 30rem;
+
+}
+
+
+.headingtile,.htptile, .statstile{
+    align-items: center;
+    border-radius: 0.5em;
+    background-color: white;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 0.125em 0.25em, rgba(45, 35, 66, 0.3) 0 0.4375em 0.8125em -0.1875em, #D6D6E7 0 -0.1875em 0 inset;
+    color: #36395A;
+    display:flex;
+    font-family: "inter";
+    justify-content: center;
+    overflow: hidden;
+    padding-left: 1em;
+    padding-right: 1em;
+    transition: box-shadow .15s, transform .15s;
+    font-weight: bold;
+    height: 3em;
+    width: 1em;
+    font-size: 2em;
+}
+.htptile{
+  font-size: 1em;
+}
+.statstile{
+
+  font-size: 2em;
+}
+
+
+.headingtile:hover {
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4 8, rgba(45, 35, 66, 0.3) 0 7 13 -3, #D6D6E7 0 -3 0 inset;
+    transform: translateY(-0.5em);
+}
+
+.welcome,
+.home {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}
+
+.bottom{
+  margin-bottom: 5rem;
+}
+
+.button,.button-dialog,.button-stats{
+  border-radius: 1em; 
+  box-shadow: rgba(45, 35, 66, 0.4) 0 0.125em 0.25em, rgba(45, 35, 66, 0.3) 0 0.4375em 0.8125em -0.1875em, #D6D6E7 0 -0.1875em 0 inset;
+  color: #36395A;
+  font-weight: bold;
+  height: 2em;
+  width: 15em;
+  font-size: 2.5em;
+  margin:1rem;
+  border-color: #f0efeb;
+  transition: all .2s;
+  cursor: pointer;
+}
+.button-dialog{
+  height: 2em;
+  width: 15em;
+  font-size: 1.5em;
+  margin-top:2rem;
+}
+
+.button-stats{
+  height: 1.5em;
+  width: 15em;
+  font-size: 2em;
+  margin-top:0rem;
+}
+
+.button:active {
+  box-shadow: 0 5px 0 #f0efeb;
+  transform: translateY(5px);
+}
+
+.green {
+    background-color: #07c04257;
+}
+
+.yellow {
+    background-color: #daa731a7;
+}
+
+.red {
+    background-color: #ba084c80;
+}
+
+
+.spirdle img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: fill;
+    display: block;
+}
+
+.spirdle {
+    display: flex;
+    width: 50%;
+    opacity: 20%;
+    z-index: -2;
+    padding: 0;
+    margin: 0;
+}
+
+.right {
+  margin-left: 100%;
+  margin-bottom: -45%;
+}
+#right-home{
+  margin-left: 100%;
+  margin-top: -50%;
+}
+
+.left {
+    margin-right: 90%;
+    margin-top: -20%;
+}
+.left-stats {
+  margin-right: 90%;
+  margin-top: -20%;
+}
+.right-stats {
+  margin-left: 100%;
+  margin-bottom: -45%;
+}
+
+#dialog {
+    padding: 3em;
+    max-width: 75%;
+    max-height: 80%;
+    border: 0;
+    box-shadow: 0 0 1em rgb(0 0 0 / .3);
+    border-radius:2em;
+    text-align:center;
+    background-color:white;
+    border-color:#f0efeb;
+    font-family: 'inter', sans-serif;
+    font-size: 1.5em;
+    color: black;
+    align-items: center;
+    justify-content: baseline;
+    flex-direction: column; 
+    line-height: 1em;
+    overflow: hidden;
+    font-weight: bold;
+    padding-top: 1rem;
+    padding-bottom: 0.2rem;
+  
+    & > * {
+      margin: 0 0 0.5rem 0;
+    }
+  }
+  .modal::backdrop {
+    background: rgb(72,79,131 / 0.4);
+  }
+  
+  
+  .order {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20%;
+  }
+  .How, .To, .play,.well,.done {
+    display: flex;
+    flex-direction: row;
+    align-items: center;  
+ 
+  }
+  #title-stats{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 2em;
+    margin: 0;
+    padding: 0;
+    
+   }
+
+ .well,.done {
+  gap: 0.5em;
+  margin-top: 0rem;
+  padding: 0%;
+
+  }
+  .card{
+      border-radius: 1.5em;
+      display: flex;
+      margin-top: 0.5rem;
+      flex-direction: column;
+      align-items: center;
+      font-family:inter;
+      font-weight: bold;
+      font-size: 1.5em;
+      width: 40%;
+      height: 80%;
+      padding-top:0.5rem;
+      padding-bottom: 0;
+    
+    }
+    .stats-tile{
+      height: 3em;
+     font-size: 1em; 
+   }
+   .word-tile{
+    width:4em;
+
+   }
+   .no-margin{
+     margin: 0em;
+   }
+  
+  
+  /*   Open state of the dialog  */
+  dialog[open] {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  
+  /*   Closed state of the dialog   */
+  dialog {
+    opacity: 0;
+    transform: scaleY(0);
+    transition:
+      opacity 0.7s ease-out,
+      transform 0.7s ease-out,
+      overlay 0.7s ease-out allow-discrete,
+      display 0.7s ease-out allow-discrete;
+    /* Equivalent to
+    transition: all 0.7s allow-discrete; */
+  }
+  
+  /*   Before-open state  */
+  /* Needs to be after the previous dialog[open] rule to take effect,
+      as the specificity is the same */
+  @starting-style {
+    dialog[open] {
+      opacity: 0;
+      transform: scaleY(0);
+    }
+  }
+  
+  /* Transition the :backdrop when the dialog modal is promoted to the top layer */
+  dialog::backdrop {
+    background-color: rgb(0 0 0 / 0%);
+    transition:
+      display 0.7s allow-discrete,
+      overlay 0.7s allow-discrete,
+      background-color 0.7s;
+    /* Equivalent to
+    transition: all 0.7s allow-discrete; */
+  }
+  
+  dialog[open]::backdrop {
+    background-color: rgb(0 0 0 / 25%);
+  }
+  
+  /* This starting-style rule cannot be nested inside the above selector
+  because the nesting selector cannot represent pseudo-elements. */
+  
+  @starting-style {
+    dialog[open]::backdrop {
+      background-color: rgb(0 0 0 / 0%);
+    }
+  }
+
+
+
+  @container (orientation: portrait) {
+    
+    .headingtile{
+      font-size: 4.5cqw;
+      padding-left: 0.75em;
+      padding-right:0.75em;
+    }
+    .statstile{
+      font-size: 4.5cqw;
+    }
+    .card{
+      width: auto;
+      height: auto;
+    }
+
+    #title-stats{
+      margin-top:0.2rem;
+      flex-wrap: wrap;
+      gap: 0.2em;
+    }
+
+    .title{
+      margin:5rem;
+    }
+    .bottom{
+     margin-bottom: 6rem;
+    }
+    
+    .button,
+    .home-button,.button-stats {  
+      font-size: 4.5cqw;
+      width: 80cqw;
+    }
+    .button-dialog{
+      font-size: 1em;
+      width: 80%;
+      height: 2em;
+      margin: 0rem;
+      padding: 0;
+      background-color: #ffffff;
+
+    }
+    .button-stats{
+      margin-top:5%;
+      height: 15cqw;
+    }
+  
+    .order{
+      gap:0.4em;
+    }
+    .sticky{
+      position: sticky;
+      bottom:0;
+    }
+
+    #dialog{
+      overflow: scroll;
+      margin: auto 1rem;
+      font-size: 1em;
+      padding-bottom:0.1rem;
+      padding-top: 1rem;
+    }
+  
+  }
+  
+
