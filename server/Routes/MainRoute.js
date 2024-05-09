@@ -112,11 +112,10 @@ mainRouter.post('/addUser', async(req, res) => {
             .catch(error => {
                 console.error('Error:', error);
     });
-
   
     checkIfUserExistsAndAdd(email);       
     
-    console.log(email);
+    console.log("User Added");
     res.json({ email });
 });
 
