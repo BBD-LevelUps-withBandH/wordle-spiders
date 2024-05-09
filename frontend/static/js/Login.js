@@ -16,7 +16,7 @@ function login() {
     
         let params = {
             'client_id': '890978323670-1gn2pk7r9dfttucr7f6je4qu39sd9ckb.apps.googleusercontent.com', //google client id 
-            'redirect_uri':'http://127.0.0.1:5500/frontend/main.html',
+            'redirect_uri':'https://web.karle.co.za',
             'response_type':'token',
             'scope':'https://www.googleapis.com/auth/userinfo.email',
             'include_granted_scopes': 'true',
