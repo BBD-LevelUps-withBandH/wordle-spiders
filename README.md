@@ -1,6 +1,6 @@
 # Spider Wordle
 
-Detailed Instructions for Setting Up AWS RDS, Postgres, and Flyway
+Detailed Instructions for Setting Up AWS RDS, Postgres, and liquibase
 Assumptions:
 
 You have already forked the repository.
@@ -45,14 +45,14 @@ GO
 
 CREATE DATABASE Spirdle;
 GO
-Setting Up Flyway for Database Migration
-Download and install Flyway Desktop from https://www.red-gate.com/products/flyway/community/download/\
+Setting Up liquibase for Database Migration
+Download and install liquibase Desktop from https://www.red-gate.com/products/liquibase/community/download/\
 
 Open your project.
 
-Locate the flyway.toml file within the Flyway/FlywaySpirdle/ directory and open it in Visual Studio Code (VSCode).
+Locate the liquibase.toml file within the liquibase/liquibaseSpirdle/ directory and open it in Visual Studio Code (VSCode).
 
-In Flyway Desktop:
+In liquibase Desktop:
 Click on the "+" icon to add a new configuration.
 Enter the following details:
 
@@ -76,9 +76,9 @@ Go to the repository secrets and add three new secrets:
 
 DB_BUILD_PASSWORD: Same as in secrets.tfvars
 DB_BUILD_USERNAME: Same as in secrets.tfvars
-DB_BUILD_URL: JDBC URL obtained from Flyway.
+DB_BUILD_URL: JDBC URL obtained from liquibase.
 ChatGPT
-Detailed Instructions for Setting Up AWS RDS, pgAdmin, and Flyway for Spirdle
+Detailed Instructions for Setting Up AWS RDS, pgAdmin, and liquibase for Spirdle
 
 Assumptions:
 
@@ -120,13 +120,13 @@ GO
 
 CREATE DATABASE Spirdle;
 GO
-Setting Up Flyway for Database Migration
+Setting Up liquibase for Database Migration
 
-Download and install Flyway Desktop from here.
+Download and install liquibase Desktop from here.
 
 Open your project.
-Find the flyway.toml file within the Flyway/FlywaySpirdle/ directory and open it in Visual Studio Code (VSCode).
-In Flyway Desktop:
+Find the liquibase.toml file within the liquibase/liquibaseSpirdle/ directory and open it in Visual Studio Code (VSCode).
+In liquibase Desktop:
 Click on the "+" icon to add a new configuration.
 Enter the following details:
 ID: SpirdleDB
@@ -147,4 +147,4 @@ Navigate to your GitHub repository and access "Actions".
 In the repository secrets, add three new secrets:
 DB_BUILD_PASSWORD: Same as in secrets.tfvars
 DB_BUILD_USERNAME: Same as in secrets.tfvars
-DB_BUILD_URL: JDBC URL obtained from Flyway.
+DB_BUILD_URL: JDBC URL obtained from liquibase.
