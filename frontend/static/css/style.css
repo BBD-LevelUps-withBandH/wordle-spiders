@@ -28,9 +28,14 @@ body {
   margin-top: 0rem;
 }
 
+.title.stats {
+  margin-top: 0rem;
+}
+
 
 .headingtile,
-.htptile {
+.htptile,
+.statstile {
   align-items: center;
   border-radius: 0.5em;
   background-color: white;
@@ -53,7 +58,12 @@ body {
   font-size: 1em;
 }
 
-.headingtile:hover {
+.statstile {
+  font-size: 2em;
+}
+
+.headingtile:hover,
+.statstile:hover {
   box-shadow: rgba(45, 35, 66, 0.4) 0 4 8, rgba(45, 35, 66, 0.3) 0 7 13 -3, #D6D6E7 0 -3 0 inset;
   transform: translateY(-0.3em);
 }
@@ -70,7 +80,8 @@ body {
 }
 
 .button,
-.button-dialog {
+.button-dialog,
+.button-stats {
   border-radius: 1em;
   box-shadow: rgba(45, 35, 66, 0.4) 0 0.125em 0.25em, rgba(45, 35, 66, 0.3) 0 0.4375em 0.8125em -0.1875em, #D6D6E7 0 -0.1875em 0 inset;
   color: #36395A;
@@ -89,6 +100,13 @@ body {
   width: 15em;
   font-size: 1.5em;
   margin-top: 2rem;
+}
+
+.button-stats {
+  height: 1.5em;
+  width: 15em;
+  font-size: 2em;
+  margin-top: 0rem;
 }
 
 .button:active {
@@ -184,13 +202,59 @@ body {
 
 .How,
 .To,
-.play {
+.play,
+.well,
+.done {
   display: flex;
   flex-direction: row;
   align-items: center;
   /* Center vertically */
 
 }
+
+#title-stats {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 2em;
+  margin: 0;
+  padding: 0;
+}
+
+.well,
+.done {
+  gap: 0.5em;
+  margin-top: 0rem;
+  padding: 0%;
+
+}
+
+.card {
+  border-radius: 1.5em;
+  display: flex;
+  /* margin-top: 0.5rem; */
+  flex-direction: column;
+  align-items: center;
+  font-family: inter;
+  font-weight: bold;
+  font-size: 1.5em;
+  width: 40%;
+  height: 80%;
+  /* padding-top: 0.5rem; */
+  padding-bottom: 0;
+}
+
+.no-margin {
+  margin: 0em;
+}
+
+.stats-tile {
+  height: 1.5em;
+  font-size: 1em;
+  width: 4em;
+}
+
 
 
 /*   Open state of the dialog  */
@@ -463,8 +527,26 @@ h1 {
     padding-right: 0.75em;
   }
 
+  .statstile {
+    font-size: 4.5cqw;
+  }
+
+  .card {
+    width: auto;
+    height: auto;
+  }
+
   .title {
     margin: 5rem;
+  }
+  .title.stats {
+    margin: 0rem;
+  }
+
+  #title-stats {
+    margin-top: 0.2rem;
+    flex-wrap: wrap;
+    gap: 0.2em;
   }
 
   .title.game {
@@ -487,7 +569,8 @@ h1 {
   }
 
   .button,
-  .home-button {
+  .home-button,
+  .button-stats {
     font-size: 1.5em;
     width: 12em;
   }
@@ -500,6 +583,10 @@ h1 {
     padding: 0;
     background-color: #ffffff;
 
+  }
+
+  .button-stats {
+    height: 15cqw;
   }
 
   .order {
