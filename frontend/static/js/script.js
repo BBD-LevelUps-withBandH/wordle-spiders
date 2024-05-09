@@ -610,11 +610,6 @@ function updateSessionStorage(){
     sessionStorage.setItem('state', JSON.stringify(state));
 }
 
-
-checkLocalStorageForState();
-setupScreen();
-
-
 async function getStats(){
     let word = sessionStorage.getItem('word');
     let score = sessionStorage.getItem('score');
@@ -636,3 +631,8 @@ async function getStats(){
 
     return statData;
 }
+
+checkLocalStorageForState();
+setupScreen();
+
+
